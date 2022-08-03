@@ -1,0 +1,1 @@
+document.ondrag = document.ondragstart = document.oncontextmenu = function () { return false; };
