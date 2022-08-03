@@ -10,7 +10,12 @@ function getDate() {
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //januar = 0
     let yyyy = today.getFullYear();
 
-    return dd + '/' + mm + '/' + yyyy;
+    switch (ConfigConst.LANGUAGE) {
+        case "fr":
+            return dd + '/' + mm + '/' + yyyy;
+        default:
+            return mm + '/' + dd + '/' + yyyy;
+    }
 }
 
 /**
@@ -25,16 +30,20 @@ function getExactDate() {
         return num.toString().padStart(2, '0');
     }
 
-    return (
-        [
-            date.getFullYear(),
-            padTo2Digits(date.getMonth() + 1),
-            padTo2Digits(date.getDate()),
-        ].join('-') +
-        ' ' + [
-            padTo2Digits(date.getHours()),
-            padTo2Digits(date.getMinutes()),
-            padTo2Digits(date.getSeconds()),
-        ].join(':')
-    );
+    switch (ConfigConst.LANGUAGE) {
+        case "fr":
+            return ([padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear(),].join('/') + ' ' + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes()), padTo2Digits(date.getSeconds()),].join(':'));
+        default:
+            return ([padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear(),].join('/') + ' ' + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes()), padTo2Digits(date.getSeconds()),].join(':'));
+    }
 }
+
+/**
+ * Return a random element of the array.
+ * Return null if array is empty.
+ * @returns {any} An element of the array.
+ */
+Array.prototype.random = function () {
+    if (this.length === 0) return null;
+    return this[Math.floor(Math.random() * this.length)];
+};
