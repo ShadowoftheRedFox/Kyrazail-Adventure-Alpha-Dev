@@ -51,7 +51,6 @@ DataLoaderManager.setup = function (plugins, number, call) {
     if (number >= plugins.length) return call();
     const plugin = plugins[number];
     DataLoaderManager._scripts.push(plugin.name);
-    DataLoaderManager.setParameters(plugin.name, plugin.parameters);
     var url = plugin.path + plugin.name + ".json";
     let httpRequest = new XMLHttpRequest(); // asynchronous request
     httpRequest.open("GET", `${url}`);
@@ -64,7 +63,7 @@ DataLoaderManager.setup = function (plugins, number, call) {
             //if object is present, create a path or go to the path and add teh data at the end of the path
             if (object) {
                 //get each path steps
-                var objPath = obj.objPath.split(".");
+                var objPath = plugin.objPath.split(".");
                 var currentPath = DataLoaderManager._dataLoaded;
                 //check if there is a path, or paste it in global
                 if (objPath[0] !== "") {
@@ -77,7 +76,7 @@ DataLoaderManager.setup = function (plugins, number, call) {
                     });
                 }
                 //adding data
-                currentPath[obj.name] = object;
+                currentPath[plugin.name] = object;
                 DataLoaderManager.setup(plugins, number + 1, call);
             }
         }
@@ -88,11 +87,4 @@ DataLoaderManager.setup = function (plugins, number, call) {
         console.warn(`${url} failed.\n${err}`);
         DataLoaderManager.setup(plugins, number + 1, call);
     };
-};
-
-DataLoaderManager.checkErrors = function () {
-    var url = this._errorUrls.shift();
-    if (url) {
-        throw new Error('Failed to load: ' + url);
-    }
 };
