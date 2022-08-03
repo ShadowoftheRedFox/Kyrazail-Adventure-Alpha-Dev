@@ -1,6 +1,6 @@
 {
     "name": "kyrazail-adventure",
-    "version": "1.0.2.3",
+    "version": "1.0.2.4",
     "description": "Kyrazail adventure game.",
     "main": "./index.html",
     "keywords": [
