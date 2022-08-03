@@ -10,7 +10,7 @@ const getPixelRatio = function getPixelRatio(context) {
     var deviceRatio = window.devicePixelRatio;
 
     // Iterate through our backing store props and determine the proper backing ratio.
-    var backingRatio = backingStores.reduce(function(prev, curr) {
+    var backingRatio = backingStores.reduce(function (prev, curr) {
         return (context.hasOwnProperty(curr) ? context[curr] : 1);
     });
 
@@ -21,10 +21,11 @@ const getPixelRatio = function getPixelRatio(context) {
 /**
  * Create a canvas element on the html page.
  * @param {number} w width of the canvas
- * @param {number} h heigth of the canvas 
+ * @param {number} h heigth of the canvas
+ * @param {number} i z-index of the canvas 
  * @returns {HTMLCanvasElement}
  */
-function generateCanvas(w, h) {
+function generateCanvas(w, h, i = 1) {
     console.log('Generating canvas.');
 
     var canvas = document.createElement('canvas'),
@@ -37,6 +38,7 @@ function generateCanvas(w, h) {
     canvas.height = Math.round(h * ratio);
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
+    canvas.style.zIndex = i;
     // Scale the context so we get accurate pixel density
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
@@ -61,4 +63,20 @@ function regenerateCanvas(canvas, context, neww, newh) {
     canvas.style.height = newh + 'px';
     // Scale the context so we get accurate pixel density
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function regenerateAllCanvas(neww, newh) {
+    const ac = document.getElementsByTagName("canvas");
+    for (var c of ac) {
+        const cc = c.getContext('2d');
+        var ratio = getPixelRatio(cc);
+
+        // Set the canvas' width then downscale via CSS
+        c.width = Math.round(neww * ratio);
+        c.height = Math.round(newh * ratio);
+        c.style.width = neww + 'px';
+        c.style.height = newh + 'px';
+        // Scale the context so we get accurate pixel density
+        cc.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
 }
