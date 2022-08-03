@@ -1,4 +1,9 @@
 const StackLoadPlugin = [{
+    name: "stack.manager",
+    path: "./src/plugin/stack/",
+    status: true,
+    description: "Plugin stack."
+}, {
     name: "stack.build",
     path: "./src/plugin/stack/",
     status: true,
@@ -49,16 +54,11 @@ const StackLoadPlugin = [{
     status: true,
     description: "Plugin stack."
 }, {
-    name: "stack.manager",
-    path: "./src/plugin/stack/",
-    status: true,
-    description: "Plugin stack."
-}, {
     name: "stack.util",
     path: "./src/plugin/stack/",
     status: true,
     description: "Plugin stack."
-},  {
+}, {
     name: "plugin.data",
     path: "./src/plugin/",
     status: true,

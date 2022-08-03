@@ -1,18 +1,34 @@
-/**
- * Built in translate switcher.
- * @param {"fr" | "en"} lang language to translate
- * @param {string} str the default string to translate 
- * @param {array} [param=[]] the paramters of the string to translate, if there is.
- */
-function translate(lang, str, ...param) {
-    if (lang === "fr") {
-        switch (str) {
-            case "a":
-                return "a";
-            default:
-                return "undefined";
-        }
-    } else {
-        //if lang is unknown, translate in english
-    }
+/// <reference path="../../ts/type.d.ts"/>
+
+function Translate() {
+    throw new Error("This is a static class.");
 }
+
+Translate.main = function (messageCode, ...args) {
+    if (!messageCode) throw new ReferenceError("messagecode is not defined.");
+
+    switch (ConfigConst.LANGUAGE.toLocaleLowerCase()) {
+        case "fr":
+            return Translate.toFR(messageCode, args);
+        default:
+            return Translate.toEN(messageCode, args);
+    }
+};
+
+Translate.toEN = function (m, a) {
+    switch (m) {
+        case "WindowManagerFatalError":
+            return "Fatal Error";
+        default:
+            return "Unknown message code";
+    }
+};
+
+Translate.toFR = function (m, a) {
+    switch (m) {
+        case "WindowManagerFatalError":
+            return "Erreur Fatale";
+        default:
+            return "Code de message inconnu";
+    }
+};
