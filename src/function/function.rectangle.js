@@ -31,7 +31,7 @@ RectangleCreator.roundRect = function (ctx, x, y, width, height, radius, fill, s
     if (typeof radius === 'number') {
         // smooth edge if width or height smaller than radius
         while ((Math.abs(width) / 2) < radius || (Math.abs(height) / 2) < radius) {
-            radius = Math.floor(radius / 2);
+            radius = radius - 1;
         }
         radius = { tl: radius, tr: radius, br: radius, bl: radius };
     } else {
