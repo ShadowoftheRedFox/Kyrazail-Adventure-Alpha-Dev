@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 class EventEmitter {
     constructor() {
         this.events = {};

@@ -1,4 +1,4 @@
-// import { tokenGeneration } from "./utils.token.js";
+/// <reference path="../../ts/type.d.ts"/>
 /**
  * Used to save data.
  * @param {scope} scope

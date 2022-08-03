@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 /**
  * Show fps, add it at function to render on any menu, even if they return.
  * @param {import("../../game").scope} scope Canvas

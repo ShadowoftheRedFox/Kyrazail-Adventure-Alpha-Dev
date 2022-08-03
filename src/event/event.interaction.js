@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 function MouseTrackerManager() {
     throw new StaticClassError("MouseTrackerManager is a static class.");
 }

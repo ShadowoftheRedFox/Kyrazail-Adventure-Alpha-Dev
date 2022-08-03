@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 /**
  * Reduce or increase little by little the alpha.
  * @param {number} speed the bigger is the number, the slower it goes.

@@ -1,3 +1,4 @@
+/// <reference path="../ts/type.d.ts"/>
 document.ondrag = document.ondragstart = document.oncontextmenu = function () { return false; };
 
 // declare all needed global variables here

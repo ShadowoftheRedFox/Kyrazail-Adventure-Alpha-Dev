@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 /** Game Update Module
  * Called by the game loop, this module will
  * perform any state calculations / updates

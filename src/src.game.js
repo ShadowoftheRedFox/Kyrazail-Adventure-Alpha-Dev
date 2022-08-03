@@ -1,3 +1,4 @@
+/// <reference path="../ts/type.d.ts"/>
 /**
  * Main function, that create every instances and object needed to start the game.
  * @param {number} w Width of the starting canvas .

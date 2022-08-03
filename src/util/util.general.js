@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 /**
  * Return current date in dd/mm/yyyy format.
  * @returns {string}

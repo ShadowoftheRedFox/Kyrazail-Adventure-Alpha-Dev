@@ -21,6 +21,9 @@ declare global {
         CONTAINER: HTMLElement | null,
         MAINCONTAINER: HTMLElement | null,
         DEBUG: boolean
-    }
+    };
+    
+    var GameAudiosToLoad: [];
+    var GameImagesToLoad: [];
 }
 

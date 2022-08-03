@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 const getPixelRatio = function getPixelRatio(context) {
     var backingStores = [
         'webkitBackingStorePixelRatio',

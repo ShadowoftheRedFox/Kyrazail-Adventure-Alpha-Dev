@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 function LoadingScreenManager() {
     throw new Error("LoadingScreenmanager is a static class.");
 }

@@ -1,3 +1,4 @@
+/// <reference path="../../ts/type.d.ts"/>
 /**
  * Generate a save token.
  * @param {any} data data the game, that will be encrypted.
