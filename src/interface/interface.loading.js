@@ -38,11 +38,17 @@ LoadingScreenManager.stripeAlpha = 0.3;
 LoadingScreenManager.stripeColor = "#9c9c9c";
 
 LoadingScreenManager.animationW = 0;
-LoadingScreenManager.animationH = 0;
+LoadingScreenManager.animationH = 2;
 LoadingScreenManager.animationStep = 0;
 LoadingScreenManager.animationImage = null;
 LoadingScreenManager.animationMargin = 100;
-LoadingScreenManager.animationStepSpeed = 200;
+LoadingScreenManager.animationLastStep = 0;
+LoadingScreenManager.animationStepCount = 0;
+LoadingScreenManager.animationStepSpeed = 250;
+LoadingScreenManager.animationStepSpeedDistance = 16;
+LoadingScreenManager.animationPositionSpeed = function (w) {
+    return (w + LoadingScreenManager.animationMargin * 2) / ((LoadingScreenManager.tipSpeed * 1000) / LoadingScreenManager.refreshSpeed);
+};
 LoadingScreenManager.animationPosition = -LoadingScreenManager.animationMargin;
 
 LoadingScreenManager.calledEqual = false;
@@ -90,6 +96,7 @@ LoadingScreenManager.init = function (callOnEqual) {
 LoadingScreenManager.end = function () {
     LoadingScreenManager.animationImage = LoadingScreenManager.viewport = LoadingScreenManager.stripePattern = LoadingScreenManager.ctx = null;
     clearInterval(LoadingScreenManager.interval);
+    removeElement(LoadingScreenManager.viewport.id);
 };
 
 LoadingScreenManager.edit = function () {
@@ -98,8 +105,9 @@ LoadingScreenManager.edit = function () {
 
     try {
         LoadingScreenManager.title();
-
         LoadingScreenManager.bar();
+        LoadingScreenManager.tip();
+        LoadingScreenManager.animate();
     } catch (e) {
         WindowManager.fatal(e);
         LoadingScreenManager.end();
@@ -150,9 +158,62 @@ LoadingScreenManager.bar = function () {
     ctx.textBaseline = "bottom";
 };
 
-LoadingScreenManager.animate = function () { };
+LoadingScreenManager.animate = function () {
+    const ctx = LoadingScreenManager.ctx,
+        w = LoadingScreenManager.w,
+        h = LoadingScreenManager.h;
 
-LoadingScreenManager.tip = function () { };
+    if (!LoadingScreenManager.animationImage) return;
+
+    // step with time delay
+    if (LoadingScreenManager.animationStepCount + LoadingScreenManager.animationStepSpeed < Date.now()) {
+        // LoadingScreenManager.animationStepCount = Date.now();
+        // LoadingScreenManager.animationStep = (LoadingScreenManager.animationStep == 0) ? 2 : 0;
+    }
+
+    // step with distance walked delay
+    if (LoadingScreenManager.animationPosition > LoadingScreenManager.animationLastStep + LoadingScreenManager.animationStepSpeedDistance) {
+        LoadingScreenManager.animationLastStep = LoadingScreenManager.animationPosition;
+        LoadingScreenManager.animationStep = (LoadingScreenManager.animationStep == 0) ? 2 : 0;
+    }
+
+    LoadingScreenManager.animationPosition += LoadingScreenManager.animationPositionSpeed(w);
+    if (LoadingScreenManager.animationPosition > LoadingScreenManager.animationMargin + LoadingScreenManager.w) {
+        LoadingScreenManager.animationPosition = -LoadingScreenManager.animationMargin;
+        //also randomise the new character
+        LoadingScreenManager.animationH = [2, 6].random();
+        LoadingScreenManager.animationW = [0, 3, 9].random();
+        LoadingScreenManager.animationLastStep = 0;
+    }
+
+    // console.log(LoadingScreenManager.animationW , LoadingScreenManager.animationStep)
+
+    ctx.drawImage(LoadingScreenManager.animationImage,
+        (LoadingScreenManager.animationW + LoadingScreenManager.animationStep) * 32,
+        LoadingScreenManager.animationH * 32,
+        32, 32,
+        LoadingScreenManager.animationPosition, h * 7 / 10,
+        32, 32
+    );
+};
+
+LoadingScreenManager.tip = function () {
+    const ctx = LoadingScreenManager.ctx,
+        w = LoadingScreenManager.w,
+        h = LoadingScreenManager.h;
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "16px Azure";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    if (LoadingScreenManager.tipCount + LoadingScreenManager.tipSpeed * 1000 < Date.now()) {
+        LoadingScreenManager.tipCount = Date.now();
+        LoadingScreenManager.tipIndex = Math.floor(ConfigConst.TIP.length * Math.random());
+    }
+
+    ctx.fillText(ConfigConst.TIP[LoadingScreenManager.tipIndex], w / 2, h * 9 / 10 - 20);
+};
 
 LoadingScreenManager.title = function () {
     if (Date.now() >= LoadingScreenManager.trailingSpeed + LoadingScreenManager.trailingStep) {

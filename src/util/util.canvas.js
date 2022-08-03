@@ -81,3 +81,16 @@ function regenerateAllCanvas(neww, newh) {
         cc.setTransform(ratio, 0, 0, ratio, 0, 0);
     }
 }
+
+/**
+ * Remove an element from the DOM.
+ * @param {string} id Id of the element.
+ * @returns {boolean} Success or not.
+ */
+function removeElement(id) {
+    const c = document.getElementById(id);
+    if (c) {
+        c.remove();
+        return true;
+    } else { return false; }
+}

@@ -17,7 +17,7 @@ window.onload = ScriptLoaderManager.setup(StackLoadPlugin, 0, () => {
             WindowManager.init();
             try {
                 LoadingScreenManager.init();
-                var p = 0, m = 500, a = 15;
+                var p = 0, m = 500, a = 1;
                 LoadingScreenManager.setMaxProgress(m);
                 setInterval(() => {
                     LoadingScreenManager.addProgress(a);
