@@ -20,7 +20,9 @@ const ConfigConst = {
         "Found a bug? Check out our Discord to report it!",
         "Stronger monsters give you better loots!",
         "Bosses can give you special items!",
-        "Search around the map, maybe you will find something interesting..."
+        "Search around the map, maybe you will find something interesting...",
+        "The most expensive equipement is not always the best...",
+        "Use potions if the fight is to tough."
     ],
     CONTAINER: (function () { return document.getElementById("container"); })(),
     MAINCONTAINER: (function () { return document.getElementById("mainContainer"); })(),
