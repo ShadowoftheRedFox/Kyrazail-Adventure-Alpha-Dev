@@ -17,6 +17,16 @@ window.onload = ScriptLoaderManager.setup(StackLoadPlugin, 0, () => {
             WindowManager.init();
             try {
                 LoadingScreenManager.init();
+                var p = 0, m = 500, a = 15;
+                LoadingScreenManager.setMaxProgress(m);
+                setInterval(() => {
+                    LoadingScreenManager.addProgress(a);
+                    p += a;
+                    if (p >= m + 20 * a) {
+                        p = 0;
+                        LoadingScreenManager.setMaxProgress(m);
+                    }
+                }, 250);
                 window.game = new Game();
             } catch (e) {
                 WindowManager.fatal(e);

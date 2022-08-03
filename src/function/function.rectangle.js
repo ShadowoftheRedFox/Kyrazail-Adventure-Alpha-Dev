@@ -28,10 +28,11 @@ RectangleCreator.roundRect = function (ctx, x, y, width, height, radius, fill, s
         radius = 5;
     }
     if (width == 0 || height == 0) return;
-    while ((Math.abs(width) / 2) < radius || (Math.abs(height) / 2) < radius) {
-        radius = Math.floor(radius / 2);
-    }
     if (typeof radius === 'number') {
+        // smooth edge if width or height smaller than radius
+        while ((Math.abs(width) / 2) < radius || (Math.abs(height) / 2) < radius) {
+            radius = Math.floor(radius / 2);
+        }
         radius = { tl: radius, tr: radius, br: radius, bl: radius };
     } else {
         var defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 };
