@@ -9,19 +9,11 @@
  *                 THOSE PARAMETERS CAN BE EDITED IN GAMES                  *
  *                                                                          *
  ****************************************************************************/
-const defaultConfig = {
+const GameConfig = {
     //if the game will update at the next start
     willUpdate: false,
     //the fps the game will be running
     targetFps: 60,
-    //quality of the game, add or removes details
-    quality: 3,
-    //adjusting color if needed
-    filter: {
-        red: 0,
-        green: 0,
-        blue: 0
-    },
     //always run enabled or disabled
     alwaysRun: false,
     //key input

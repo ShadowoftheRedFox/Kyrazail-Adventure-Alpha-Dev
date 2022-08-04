@@ -23,6 +23,30 @@ declare global {
         DEBUG: boolean
     };
 
+    const GameConfig: {
+        willUpdate: false,
+        targetFps: 60,
+        alwaysRun: false,
+        /**
+         * Combine KEYs name to a functionnality.
+         * @see [all KEY name here](https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/#a-full-list-of-key-event-values)
+         * @warn It is strongly not recommended to put same keys at two different functionnality, it may cause unexpected behaviors.
+         */
+        keyBoard: {
+            up: string[],
+            down: string[],
+            right: string[],
+            left: string[],
+            run: string[],
+            interaction: string[],
+            debug: string[],
+            pause: string[],
+            back: string[],
+            confirm: string[],
+            inventory: string[]
+        }
+    };
+
     var GameAudiosToLoad: [];
     var GameImagesToLoad: [];
 }
