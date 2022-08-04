@@ -54,6 +54,9 @@ WindowManager.reloadGame = function () {
  * @param {Error} e The error.
  */
 WindowManager.fatal = function (e) {
+    //stop the loading screen if there is one
+    LoadingScreenManager.end();
+
     const w = WindowManager.data.viewport.offsetWidth,
         h = WindowManager.data.viewport.offsetHeight;
     console.error(e);
