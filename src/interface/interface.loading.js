@@ -94,9 +94,9 @@ LoadingScreenManager.init = function (callOnEqual) {
 };
 
 LoadingScreenManager.end = function () {
-    LoadingScreenManager.animationImage = LoadingScreenManager.viewport = LoadingScreenManager.stripePattern = LoadingScreenManager.ctx = null;
-    clearInterval(LoadingScreenManager.interval);
     removeElement(LoadingScreenManager.viewport.id);
+    clearInterval(LoadingScreenManager.interval);
+    LoadingScreenManager.animationImage = LoadingScreenManager.viewport = LoadingScreenManager.stripePattern = LoadingScreenManager.ctx = null;
 };
 
 LoadingScreenManager.edit = function () {
