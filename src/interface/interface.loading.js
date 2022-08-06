@@ -52,6 +52,7 @@ LoadingScreenManager.animationPositionSpeed = function (w) {
 LoadingScreenManager.animationPosition = -LoadingScreenManager.animationMargin;
 
 LoadingScreenManager.calledEqual = false;
+LoadingScreenManager.e = 0;
 
 LoadingScreenManager.init = function (callOnEqual) {
     if (callOnEqual && typeof callOnEqual !== "function") throw new TypeError("callOnEqual is not a function.");
@@ -139,17 +140,21 @@ LoadingScreenManager.bar = function () {
     ctx.textBaseline = "middle";
     LoadingScreenManager.progressFunction();
 
+    // progress bar progress %
+    let b = (LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax);
+    let p = Math.floor(b * 100);
+    if (Math.random() * 10000 <= 1) LoadingScreenManager.e = Date.now();
+    if (LoadingScreenManager.e + 666 >= Date.now()) { p = "666"; b = 1; }
+
     ctx.fillStyle = grd;
-    RectangleCreator.roundRect(ctx, w / 5, h * 9 / 10, (LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax) * w * 6 / 10, h / 20, 30, true);
+    RectangleCreator.roundRect(ctx, w / 5, h * 9 / 10, b * w * 6 / 10, h / 20, 30, true);
     ctx.fillStyle = LoadingScreenManager.createPattern(LoadingScreenManager.stripeColor, LoadingScreenManager.stripeAlpha);
-    RectangleCreator.roundRect(ctx, w / 5, h * 9 / 10, (LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax) * w * 6 / 10, h / 20, 30, true);
+    RectangleCreator.roundRect(ctx, w / 5, h * 9 / 10, b * w * 6 / 10, h / 20, 30, true);
 
     ctx.fillStyle = "#fff";
     // true progress %
     // let p = Math.floor((LoadingScreenManager.progress / LoadingScreenManager.progressMax) * 1000) / 10;
 
-    // progress bar progress %
-    let p = Math.floor((LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax) * 100);
 
     // animated %
     // ctx.fillText(`${p}%`, (LoadingScreenManager.progressAnimation) * w * 6 / 10 / 2 + w / 5, h * 9 / 10);
