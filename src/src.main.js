@@ -1,4 +1,6 @@
 /// <reference path="../ts/type.d.ts"/>
+
+console.log("%cKyrazail Adventure", "font-family: serif; font-size: 32px; color: black; font-weight: 700; background: linear-gradient(0.25turn, #F3C126, #6FE0E1, #3C1EEE);padding: 40px");
 document.ondrag = document.ondragstart = document.oncontextmenu = function () { return false; };
 
 // declare all needed global variables here
@@ -17,16 +19,6 @@ window.onload = ScriptLoaderManager.setup(StackLoadPlugin, 0, () => {
             WindowManager.init();
             try {
                 LoadingScreenManager.init();
-                var p = 0, m = 500, a = 1;
-                LoadingScreenManager.setMaxProgress(m);
-                setInterval(() => {
-                    LoadingScreenManager.addProgress(a);
-                    p += a;
-                    if (p >= m + 20 * a) {
-                        p = 0;
-                        LoadingScreenManager.setMaxProgress(m);
-                    }
-                }, 250);
                 window.game = new Game();
             } catch (e) {
                 WindowManager.fatal(e);
