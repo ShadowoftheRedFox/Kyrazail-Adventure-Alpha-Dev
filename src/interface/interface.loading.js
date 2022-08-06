@@ -144,7 +144,7 @@ LoadingScreenManager.bar = function () {
     let b = (LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax);
     let p = Math.floor(b * 100);
     if (Math.random() * 10000 <= 1) LoadingScreenManager.e = Date.now();
-    if (LoadingScreenManager.e + 666 >= Date.now()) { p = "666"; b = 1; }
+    if (LoadingScreenManager.e + 1000 >= Date.now()) { p = "666"; b = 1; }
 
     ctx.fillStyle = grd;
     RectangleCreator.roundRect(ctx, w / 5, h * 9 / 10, b * w * 6 / 10, h / 20, 30, true);
