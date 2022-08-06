@@ -21,17 +21,15 @@ WindowManager.init = function () {
     WindowManager.data.viewport.id = "errorViewPort";
     WindowManager.data.ctx = WindowManager.data.viewport.getContext('2d');
     ConfigConst.CONTAINER.insertBefore(WindowManager.data.viewport, ConfigConst.CONTAINER.firstChild);
-    console.log("Created error viewport.");
 };
 
 WindowManager.beforeUnloadSetup = function () {
     window.addEventListener("beforeunload", function (e) {
-        var confirmationMessage = "Are you sure you want to leave this page? Progression might not be saved.";
+        var confirmationMessage = GameTranslate("EventBeforeUnload");
 
         e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
         return confirmationMessage; // Gecko, WebKit, Chrome <34
     });
-    console.log("Added before unload event.");
 };
 
 WindowManager.closeGame = function () {
@@ -76,11 +74,11 @@ WindowManager.fatal = function (e) {
     const report = e.stack.split("\n");
     for (let i = 0; i < report.length; i++) {
         const reportWidth = ctx.measureText(report[i]).width;
-        if (reportWidth >= w) report.push("Long crash log found. Check console for a full report.");
+        if (reportWidth >= w) report.push(GameTranslate("WindowManagerLongLog"));
         ctx.fillText(report[i], 40, 100 + 16 * i, w);
     }
     ctx.fillStyle = "#ff0000";
     ctx.font = "bold 32px serif";
     ctx.textBaseline = 'top';
-    ctx.fillText("Fatal error:", 40, 40);
+    ctx.fillText(GameTranslate("WindowManagerFatalError"), 40, 40);
 };
