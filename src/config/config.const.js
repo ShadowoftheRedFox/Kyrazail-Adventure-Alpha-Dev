@@ -22,7 +22,10 @@ const ConfigConst = {
         "Bosses can give you special items!",
         "Search around the map, maybe you will find something interesting...",
         "The most expensive equipement is not always the best...",
-        "Use potions if the fight is to tough."
+        "Use potions if the fight is too tough.",
+        "Don't forget to save often!",
+        "Monsters respawn after a certain amount of time...",
+        "There is a land were God left something... It's a myth of course, right?"
     ],
     CONTAINER: (function () { return document.getElementById("container"); })(),
     MAINCONTAINER: (function () { return document.getElementById("mainContainer"); })(),
