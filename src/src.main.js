@@ -13,7 +13,8 @@ window.onload = ScriptLoaderManager.setup(StackLoadPlugin, 0, () => {
         StackLoadCore, StackLoadEntity,
         StackLoadEvent, StackLoadFunction,
         StackLoadGlobal, StackLoadInterface,
-        StackLoadManager, StackLoadUtil
+        StackLoadManager, StackLoadUtil,
+        StackLoadLanguage
     ), 0, () => {
         DataLoaderManager.setup(StackLoadData, 0, () => {
             WindowManager.init();
