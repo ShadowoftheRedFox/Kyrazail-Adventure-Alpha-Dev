@@ -39,6 +39,15 @@ function getExactDate() {
 }
 
 /**
+ * Remove any duplicate from the array, so it has every item once.
+ * @param {any[]} a The array we want to remove duplicates.
+ * @return {any[]} The array without the duplicates.
+ */
+function RemoveDuplicate(a) {
+    return [...new Set(a)];
+}
+
+/**
  * Return a random element of the array.
  * Return null if array is empty.
  * @returns {any} An element of the array.
