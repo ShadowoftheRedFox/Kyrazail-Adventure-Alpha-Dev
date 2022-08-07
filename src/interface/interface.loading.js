@@ -160,8 +160,7 @@ LoadingScreenManager.bar = function () {
     // ctx.fillText(`${p}%`, (LoadingScreenManager.progressAnimation) * w * 6 / 10 / 2 + w / 5, h * 9 / 10);
 
     // static %
-    ctx.fillText(`${p}%`, w / 2, h * 9 / 10 + 16);
-    ctx.textBaseline = "bottom";
+    ctx.fillText(`${p}%`, w / 2, h * 9 / 10 + h / 40);
 };
 
 LoadingScreenManager.animate = function () {
