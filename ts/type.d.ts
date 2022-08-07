@@ -114,7 +114,7 @@ declare global {
             canPlayerSell: boolean,
             canPlayerBuy: boolean,
             canPlayerEquip: boolean,
-            items: GameItem[],
+            items: GameItemName[],
             welcomeMessage: GameLanguageCodedString[]
         };
         /** If type is npc.*/
@@ -129,14 +129,16 @@ declare global {
 
         character: {
             invisible: boolean,
-            image: string,
-            col: number,
-            row: number
+            image: string | null,
+            col: number | null,
+            row: number | null
         };
 
         movementSpeed: number;
 
-        speakImage: string;
+        speakImage: string | null;
+        speakRow: number;
+        speakCol: number;
     };
 
     type GameStatusEffect = {
@@ -202,6 +204,9 @@ declare global {
     /** A code that will be used in the language module to return the true string but translated in the wanted language.*/
     type GameLanguageCodedString = string;
 
+    /** Refers to the name of an item. */
+    type GameItemName = string;
+
     type GameItemType = "resource" | "equipement" | "potion";
 
 
@@ -233,12 +238,12 @@ declare global {
         weakness: GameAttackType[],
 
         status: GameStatusEffect[],
-        loots: GameItem[],
+        loots: { item: GameItemName, amount: number }[],
         gold: number,
         exp: number,
 
         boss: boolean,
-        bossLoot: GameItem[]
+        bossLoot: { item: GameItemName, amount: number }[]
     };
 
     type GameSpecialAbility = {
@@ -246,7 +251,10 @@ declare global {
         mpCost: number,
         hpCost: number,
         spCost: number,
+        /** When attacking. */
         animationImage: string | null,
+        /** In menu. */
+        skillImage: string | null,
         type: GameAttackType,
         /** Delay before using the skill again, in rounds.*/
         delay: number,
