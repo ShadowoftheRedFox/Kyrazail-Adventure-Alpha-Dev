@@ -149,3 +149,9 @@ const gameRender = function gameRender(scope) {
         fps(scope);
     };
 };
+
+function GameRender(scope) {
+    return function render() {
+        scope.state.menu.intro.render(scope);
+    };
+ }

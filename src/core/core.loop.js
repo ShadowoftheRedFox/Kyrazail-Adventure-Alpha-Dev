@@ -8,7 +8,7 @@
  * @param {scope} scope 
  * @returns {scope}
  */
-class gameLoop {
+class GameLoop {
     /**
      * Constructor
      * @constructor
@@ -76,7 +76,6 @@ class gameLoop {
 
                 // Choose the correct FPS calculation, then update the exposed fps value
                 activeCycle = cycles[resetState];
-                if (activeCycle.frameCount >= 3000) activeCycle.frameCount = 0;
                 loop.fps = Math.round(1000 / (activeCycle.sinceStart / activeCycle.frameCount) * 100) / 100;
 
                 // If our frame counts are equal....
@@ -97,19 +96,13 @@ class gameLoop {
                 }
 
                 //check for errors
-                scope.crashHandler();
+                scope.GameCrashHandler();
                 // Update the game state
-                scope.state = scope.update(now);
+                scope.state = scope.GameStateUpdate(now);
                 // Render the next frame
-                scope.render();
-                scope.maprender();
-                scope.edit();
+                scope.GameRender();
             }
         };
-
-        // Start off main loop
-        loop.main();
-
         return loop;
     }
 }

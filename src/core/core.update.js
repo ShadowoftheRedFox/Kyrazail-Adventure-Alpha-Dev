@@ -61,3 +61,15 @@ const gameUpdate = function gameUpdate(scope) {
         return state;
     };
 };
+
+/**
+ * 
+ * @param {GameScope} scope 
+ * @returns {Function}
+ */
+function GameStateUpdate(scope) {
+    return function update(tFrame) {
+        scope.state.menu.intro.update(scope);
+        return scope.state;
+    };
+}
