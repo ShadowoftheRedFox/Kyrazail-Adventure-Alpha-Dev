@@ -6,22 +6,23 @@ class GameEntitiesClass {
      * @param {GameEntitiesOptions} options 
      */
     constructor(options) {
-        this.validateOptions(options);
         this.name = {};
         this.name.en = options.name.en || options.name;
         this.name.fr = options.name.fr || options.name;
 
-        this.type = options.type;
-        this.pattern = options.pattern;
+        this.type = options.type || "npc";
+        this.dialog = options.dialog || ["..."];
+        this.pattern = options.pattern || "idle";
 
-        this.spawnX = options.spawnX;
-        this.spawnY = options.spawnY;
-        this.spawnOrientation = options.spawnOrientation;
+        this.spawnX = options.spawnX || 0;
+        this.spawnY = options.spawnY || 0;
+        this.spawnOrientation = options.spawnOrientation || "south";
 
-        this.movementSpeed = options.movementSpeed;
-        this.speakImage = options.speakImage;
-        this.speakRow = options.speakRow;
-        this.speakCol = options.speakCol;
+        this.movementSpeed = options.movementSpeed || 0;
+        this.speakImage = options.speakImage || null;
+        this.speakRow = options.speakRow || null;
+        this.speakCol = options.speakCol || null;
+        this.validateOptions(options);
     }
 
     /**
