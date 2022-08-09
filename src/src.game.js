@@ -56,28 +56,43 @@ class Game {
         this.cache = {
             image: {},
             audio: {},
-            map: {},
+            map: DataLoaderManager._dataLoaded.map,
             // we preloaded his data at the load of the dom
-            data: DataLoaderManager._dataLoaded.Data
+            data: DataLoaderManager._dataLoaded.Data,
+            // store the interfaces contexts
+            context: {}
         };
 
         //TODO add a share method so that every rendering object in their creating function share the same canavs
         //add every rendering object to their current object
         this.state.entities = this.state.entities || {};
-        // this.state.entities.player = new Player(this, Math.round(w / 2), Math.round(h / 3));
+        this.state.entities.player = new GameEntityPlayer(0, 0, "east", "Characters/Spiritual", 0, 2, "Faces/Spiritual", 0, 2);
         // add a mob/NPC manager so it can be added anytime
 
         this.state.menu = this.state.menu || {};
+        this.state.menu.intro = new GameIntroductionInterface(this);
+        // this.state.menu.main = new Welcome(this);
         // this.state.menu.pause = new Pause(this);
         // this.state.menu.gameOver = new GameOver(this);
-
-        this.state.welcome = this.state.welcome || {};
-        // this.state.welcome.main = new Welcome(this);
-
-        this.state.once = this.state.once || {};
-        // this.state.once.intro = new Intro(this);
         //todo will be added later, because use a lot of data trafic and must manage the github API
-        // this.state.once.checkUpdate = new updateMenu(this);
+        // this.state.menu.checkUpdate = new updateMenu(this);
+
+        // Instantiate core modules with the current scope
+        this.GameCrashHandler = GameCrashHandler(this);
+        this.GameStateUpdate = GameStateUpdate(this);
+        this.GameRender = GameRender(this);
+        this.GameLoop = new GameLoop(this);
+
+        var that = this;
+        GameLoadImage(this, GameImagesToLoad, function() {
+            GameLoadAudio(this, GameAudiosToLoad, () => {
+                //todo launch an audio on the main menu
+                
+                // Start off main loop
+                that.GameLoop.main();
+                LoadingScreenManager.end();
+            });
+        });
     }
 
     getGameMainPath() {
