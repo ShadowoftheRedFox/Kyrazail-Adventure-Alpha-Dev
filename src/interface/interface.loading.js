@@ -78,13 +78,17 @@ LoadingScreenManager.init = function (callOnEqual) {
 
     LoadingScreenManager.interval = setInterval(() => {
         if ($.offsetWidth !== LoadingScreenManager.w || $.offsetHeight !== LoadingScreenManager.h) {
-            regenerateCanvas(LoadingScreenManager.viewport, LoadingScreenManager.ctx, $.offsetWidth, $.offsetHeight);
+            regenerateCanvas(LoadingScreenManager.viewport, $.offsetWidth, $.offsetHeight);
             LoadingScreenManager.w = $.offsetWidth;
             LoadingScreenManager.h = $.offsetHeight;
         }
 
-        if (LoadingScreenManager.progress == LoadingScreenManager.progressMax && !LoadingScreenManager.calledEqual) {
-            if (callOnEqual && typeof callOnEqual == "function") callOnEqual();
+        if (LoadingScreenManager.progress == LoadingScreenManager.progressMax && LoadingScreenManager.calledEqual === false) {
+            if (callOnEqual && typeof callOnEqual == "function") {
+                callOnEqual();
+                GameGlobalEvent.emit("LoadingScreenFinishProgress");
+                console.log("called");
+            }
             LoadingScreenManager.calledEqual = true;
         }
 
@@ -143,7 +147,7 @@ LoadingScreenManager.bar = function () {
     // progress bar progress %
     let b = (LoadingScreenManager.progressAnimation / LoadingScreenManager.progressMax);
     let p = Math.floor(b * 100);
-    if (Math.random() * 10000 <= 1) LoadingScreenManager.e = Date.now();
+    if (Math.random() * 100000 <= 1) LoadingScreenManager.e = Date.now();
     if (LoadingScreenManager.e + 1000 >= Date.now()) { p = "666"; b = 1; }
 
     ctx.fillStyle = grd;
@@ -270,6 +274,7 @@ LoadingScreenManager.setMaxProgress = function (n) {
     LoadingScreenManager.progressLast = 0;
     LoadingScreenManager.progressAnimation = 0;
     LoadingScreenManager.progressMax = n;
+    LoadingScreenManager.calledEqual = false;
 };
 
 LoadingScreenManager.createPattern = function (color = "grey", alpha = 1) {
