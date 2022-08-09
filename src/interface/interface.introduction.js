@@ -28,7 +28,7 @@ class GameIntroductionInterface extends GameInterfaces {
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
         ctx.fillText(`${p.releaseType} v${p.version} Last update: ${p.lastUpdate}`, 10, h - 26);
-        ctx.fillText("(.Y.)", w / 2, h / 2);
+        ctx.fillText("...", w / 2, h / 2);
     }
 
     /**
