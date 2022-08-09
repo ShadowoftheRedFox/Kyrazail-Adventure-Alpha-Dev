@@ -11,28 +11,26 @@ function GameLoadImage(scope, imageArray, callback) {
     if (callback && typeof callback != "function") throw new TypeError("Callback must be a function");
 
     LoadingScreenManager.message = "Loading images";
-    LoadingScreenManager.setMaxProgress(imageArray.length);
-
     if (imageArray.length == 0) return callback();
-    var imagesLeftToLoad = imageArray.length;
+    LoadingScreenManager.setMaxProgress(imageArray.length);
 
     imageArray.forEach(image => {
         if (scope.cache.image[image]) console.log(`${image} is already loaded`);
         else {
             const i = new Image();
             i.onerror = function () {
-                imagesLeftToLoad--;
                 LoadingScreenManager.addProgress(1);
                 console.warn(`${i.src} failed`);
             };
             i.onload = function () {
-                imagesLeftToLoad--;
                 LoadingScreenManager.addProgress(1);
                 scope.cache.image[image] = GameLoadImage.structure(i, image);
             };
             i.src = scope.constants.href + "resources/Image/" + image + ".png";
         }
     });
+
+    GameGlobalEvent.once("LoadingScreenFinishProgress", callback());
 }
 
 /**
