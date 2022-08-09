@@ -1,5 +1,10 @@
 /// <reference path="../../ts/type.d.ts"/>
-const getPixelRatio = function getPixelRatio(context) {
+/*
+/**
+ * @param {CanvasRenderingContext2D} context 
+ * @returns 
+ * /
+function getPixelRatio(context) {
     var backingStores = [
         'webkitBackingStorePixelRatio',
         'mozBackingStorePixelRatio',
@@ -17,7 +22,7 @@ const getPixelRatio = function getPixelRatio(context) {
 
     // Return the proper pixel ratio by dividing the device ratio by the backing ratio
     return deviceRatio / parseInt(backingRatio);
-};
+}
 
 /**
  * Create a canvas element on the html page.
@@ -25,7 +30,7 @@ const getPixelRatio = function getPixelRatio(context) {
  * @param {number} h heigth of the canvas
  * @param {number} i z-index of the canvas 
  * @returns {HTMLCanvasElement}
- */
+ * /
 function generateCanvas(w, h, i = 1) {
     console.log('Generating canvas.');
 
@@ -49,11 +54,11 @@ function generateCanvas(w, h, i = 1) {
 /**
  * Edit the canvas element on the html page to the new dimension.
  * @param {HTMLCanvasElement} canvas canvas element
- * @param {CanvasRenderingContext2D} context
  * @param {number} neww width of the canvas
  * @param {number} newh heigth of the canvas 
- */
-function regenerateCanvas(canvas, context, neww, newh) {
+ * /
+function regenerateCanvas(canvas, neww, newh) {
+    const context = canvas.getContext("2d");
     // Pass our canvas' context to our getPixelRatio method
     var ratio = getPixelRatio(context);
 
@@ -86,7 +91,7 @@ function regenerateAllCanvas(neww, newh) {
  * Remove an element from the DOM.
  * @param {string} id Id of the element.
  * @returns {boolean} Success or not.
- */
+ * /
 function removeElement(id) {
     const c = document.getElementById(id);
     if (c) {
@@ -94,3 +99,9 @@ function removeElement(id) {
         return true;
     } else { return false; }
 }
+*/
+function getPixelRatio(c) { var b = ['webkitBackingStorePixelRatio', 'mozBackingStorePixelRatio', 'msBackingStorePixelRatio', 'oBackingStorePixelRatio', 'backingStorePixelRatio'], d = window.devicePixelRatio, B = b.reduce(function (prev, curr) { return (c.hasOwnProperty(curr) ? c[curr] : 1); }); return d / parseInt(B); }
+function generateCanvas(w, h, i = 1) { var c = document.createElement('canvas'), x = c.getContext('2d'); var r = getPixelRatio(x); c.width = Math.round(w * r); c.height = Math.round(h * r); c.style.width = w + 'px'; c.style.height = h + 'px'; c.style.zIndex = i; x.setTransform(r, 0, 0, r, 0, 0); return c; }
+function regenerateCanvas(c, w, h) { const x = c.getContext("2d"); var r = getPixelRatio(x); c.width = Math.round(w * r); c.height = Math.round(h * r); c.style.width = w + 'px'; c.style.height = h + 'px'; x.setTransform(r, 0, 0, r, 0, 0); }
+function regenerateAllCanvas(w, h) { const ac = document.getElementsByTagName("canvas"); for (var c of ac) { const cc = c.getContext('2d'); var r = getPixelRatio(cc); c.width = Math.round(w * r); c.height = Math.round(h * r); c.style.width = w + 'px'; c.style.height = h + 'px'; cc.setTransform(r, 0, 0, r, 0, 0); } }
+function removeElement(i) { const c = document.getElementById(i); if (c) { c.remove(); return true; } else return false; }
