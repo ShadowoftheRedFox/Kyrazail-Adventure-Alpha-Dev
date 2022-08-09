@@ -4,16 +4,18 @@ declare global {
         KEY: "9z$C&E)H@McQfTjWnZr4u7x!A%D*G-JaNdRgUkXp2s5v8y/B?E(H+MbPeShVmYq3t6w9z$C&F)J@NcRfTjWnZr4u7x!A%D*G-KaPdSgVkXp2s5v8y/B?E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7x!A%D*G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThWmZq4t7w!z%C&F)J@NcRfUjXn2r5u8x/A?D(G-KaPdSgVkYp3s6v9y$B&E)H@MbQeThWmZq4t7w!z%C*F-JaNdRfUjXn2r5u8x/A?D(G+KbPeShVkYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z%C*F-JaNdRgUkXp2s5u8x/A?D(G+KbPeShVmYq3t6w9y$B&E)H@McQfTjWnZr4u7x!A%C*F-JaNdRgUkXp2s5v8y/B?E(G+KbPeShVmYq3t6w9z$C&F)J@McQfTjWnZr4u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H+MbQeThVmYq3t6",
         DISCORD: "https://discord.gg/5mF5AHnRCr",
         GITHUB: "https://github.com/ShadowoftheRedFox/Kyrazail-Adventure-Dev.git",
-        LANGUAGE: "en" | "fr",
+        LANGUAGE: GameLanguage,
         ZINDEX: {
-            MAP: 0,
-            MAPANIMATED: 1,
-            ENTITIES: 2,
-            MAPOVER: 3,
-            MAPEFFECT: 4,
-            FIGHT: 5,
-            PLAYERQUIPEMENT: 6,
-            PAUSE: 7,
+            UNKNOWN: 0,
+            MAP: 1,
+            MAPANIMATED: 2,
+            ENTITIES: 3,
+            MAPOVER: 4,
+            MAPEFFECT: 5,
+            FIGHT: 6,
+            PLAYERQUIPEMENT: 7,
+            PAUSE: 8,
+            INTRODUCTION: 998,
             LOADING: 999,
             ERROR: 1000
         },
@@ -106,7 +108,7 @@ declare global {
     var GameImagesToLoad: [];
 
     type GameEntitiesOptions = {
-        name: string | { en: string, fr: string };
+        name: string | GameLanguageObject;
         /** If type is "hostile".*/
         stats: GameEntitiesStats
         /** If type is marchand.*/
@@ -118,27 +120,27 @@ declare global {
             welcomeMessage: GameLanguageCodedString[]
         };
         /** If type is npc.*/
-        dialog: GameLanguageCodedString[];
+        dialog: GameLanguageCodedString[] | ["..."];
 
         type: "hostile" | "npc" | "marchand" | "player";
         pattern: "follow" | "merge" | "idle" | "custom" | "player";
 
-        spawnX: number;
-        spawnY: number;
-        spawnOrientation: GameOrientation;
+        spawnX: number | 0;
+        spawnY: number | 0;
+        spawnOrientation: GameOrientation | "south";
 
         character: {
-            invisible: boolean,
+            invisible: boolean | true,
             image: string | null,
             col: number | null,
             row: number | null
         };
 
-        movementSpeed: number;
+        movementSpeed: number | 0;
 
         speakImage: string | null;
-        speakRow: number;
-        speakCol: number;
+        speakRow: number | null;
+        speakCol: number | null;
     };
 
     type GameStatusEffect = {
@@ -162,7 +164,7 @@ declare global {
     };
 
     type GameItem = {
-        name: { fr: string, en: string },
+        name: GameLanguageObject,
         image: string,
         col: number,
         rown: number,
@@ -181,7 +183,7 @@ declare global {
     };
 
     type GameRecipe = {
-        name: { fr: string, en: string },
+        name: GameLanguageObject,
         description: GameLanguageCodedString,
         /** Array of items names */
         recipeList: {
@@ -247,7 +249,7 @@ declare global {
     };
 
     type GameSpecialAbility = {
-        name: { fr: string, en: string },
+        name: GameLanguageObject,
         mpCost: number,
         hpCost: number,
         spCost: number,
@@ -261,4 +263,183 @@ declare global {
         /** If there is a max amount of user per battle.*/
         usePerBattle: number | null
     };
+
+    type GameScope = {
+        /**Width of the game screen.*/
+        w: number,
+        /**Height of the game screen.*/
+        h: number,
+        /**State of the game.*/
+        state: {},
+        /**The language wanted.*/
+        language: GameLanguage,
+        /**Game session relativ constants.*/
+        constants: {
+            /**If node js is present or not.*/
+            isNodejs: boolean,
+            /**What platform the game is currently running on.*/
+            platform: "Cloud" | string,
+            /**The url location of the game.*/
+            href: string,
+            /**The wanted fps of the game.*/
+            targetFps: number,
+            /**Package.json*/
+            package: {
+                name: "kyrazail-adventure",
+                version: string,
+                description: "Kyrazail adventure game.",
+                author: "Shadow of the Red Fox#5881",
+                lastUpdate: string,
+                releaseType: "Dev/Alpha" | "Dev/Beta" | "Release",
+                changelog: string[],
+            }
+        };
+        checkGameUpdate: {
+            lastCheck: {
+                updateFound: boolean,
+                versionFound: string,
+                lastCheck: string
+            }
+        };
+        soundsSettings: {
+            volumeBGM: number,
+            volumeBGS: number,
+            volumeMAIN: number,
+            volumeME: number,
+            volumeSE: number,
+            playingBGM: HTMLAudioElement | null,
+            playingBGS: HTMLAudioElement | null,
+            playingMAIN: HTMLAudioElement | null,
+            playingME: HTMLAudioElement | null,
+            playingSE: HTMLAudioElement | null
+        };
+        cache: {
+            image: (name: string) => {
+                image: HTMLImageElement,
+                tileW?: number,
+                tileH?: number,
+                col?: number,
+                row?: number
+            },
+            audio: (name: string) => HTMLAudioElement,
+            map: (name: string) => GameMapPattern,
+            // we preloaded his data at the load of the dom
+            data: {
+                names: {
+                    malefirstnames: string[]
+                    femalefirstnames: string[]
+                    lastnames: string[]
+                },
+                item: (name: GameItemName) => GameItem,
+                event: {},
+                title: {},
+                monsters: {},
+                class: {},
+                skills: (name: string) => GameSpecialAbility,
+            },
+            context: (name: string) => CanvasRenderingContext2D
+        };
+    };
+
+    const GameGlobalEvent: {
+        /** Will launch the given function when the given event is emited somewhere.*/
+        on(event: string | any, listener: (...any: any[]) => {} | any): () => void;
+        /** Will launch the given function when the given event is emited somewhere, one time.*/
+        once(event: string | any, listener: (...any: any[]) => {} | any): void;
+        /** Emit the given event, if there is a listener somewhere of the given event, he will fire.*/
+        emit(event: string | any, ...args: any[]): void;
+        /** Remove a listener from an event.*/
+        removeListener(event: string | any, listener: () => {} | any): void;
+        /** Remove all listener from an event is the event parameter is found, otherwise, delete all event.*/
+        removeAllListener(event: string | any): void;
+    }
+
+    type GameLanguage = "fr" | "en";
+    type GameLanguageObject = {
+        fr: string,
+        en: string
+    }
+
+    type GameInterfacesOptions = {
+        asOwnCanvas: boolean,
+        canvasGroup: string | "MainGameGroup",
+        zindex: number,
+        requiredImage: string[],
+        requiredAudio: string[],
+
+        transitionSpawn: boolean,
+        transitionLeave: boolean
+    }
+
+    type GameMapPattern = {
+        height: number,
+        infinite: false,
+        layers: [{
+            data: number[],
+            height: number,
+            id: number,
+            name: string,
+            opacity: number,
+            type: "tilelayer",
+            visible: true,
+            width: number,
+            x: number,
+            y: number
+        }],
+        orientation: "orthogonal",
+        renderorder: "right-up",
+        tileheight: number,
+        tilesets: {
+            firstgid: number,
+            source: string
+        }[],
+        tilewidth: number,
+        width: number,
+        spawn: number[],
+        colision: number[][]
+    }
+
+    /**
+     * Edit the canvas element on the html page to the new dimension.
+     * @param canvas canvas element
+     * @param neww width of the canvas
+     * @param newh heigth of the canvas
+     */
+    function regenerateCanvas(canvas: HTMLCanvasElement, neww: number, newh: number): void;
+
+    /**
+     * Edit the canvas element on the html page to the new dimension.
+     * @param canvas canvas element
+     * @param neww width of the canvas
+     * @param newh heigth of the canvas
+     */
+    function regenerateCanvas(canvas: HTMLCanvasElement, neww: number, newh: number): void;
+
+    /**
+     * Create a canvas element on the html page.
+     * @param w width of the canvas
+     * @param h heigth of the canvas
+     * @param i z-index of the canvas
+     */
+    function generateCanvas(w: number, h: number, i?: number): HTMLCanvasElement;
+
+    /**
+     * Get the pixel ratio depending of the current device.
+     * @param context the wanted context ration
+     */
+    function getPixelRatio(context: CanvasRenderingContext2D): number;
+
+    /**
+     * Regenerate all canvas element to the given dimension.
+     * @param neww The new window width
+     * @param newh The new window height
+     */
+    function regenerateAllCanvas(neww: number, newh: number): void;
+
+    /**
+     * Remove an element off the dom.
+     * @param id The id of the element to remove
+     * @returns The success or not of the operation
+     */
+    function removeElement(id: string): boolean
 }
