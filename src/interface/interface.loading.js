@@ -100,7 +100,7 @@ LoadingScreenManager.init = function (callOnEqual) {
 };
 
 LoadingScreenManager.end = function () {
-    removeElement(LoadingScreenManager.viewport.id);
+    if (LoadingScreenManager.viewport) removeElement(LoadingScreenManager.viewport.id);
     clearInterval(LoadingScreenManager.interval);
     LoadingScreenManager.animationImage = LoadingScreenManager.viewport = LoadingScreenManager.stripePattern = LoadingScreenManager.ctx = null;
 };
