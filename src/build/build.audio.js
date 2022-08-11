@@ -13,6 +13,7 @@ function GameLoadAudio(scope, AudioArray, callback) {
     LoadingScreenManager.message = "Loading audios";
     if (AudioArray.length == 0) return callback();
     LoadingScreenManager.setMaxProgress(AudioArray.length);
+    let c = AudioArray.length;
 
     AudioArray.forEach(audio => {
         if (scope.cache.audio[audio]) console.log(`${audio} is already loaded`);
@@ -21,15 +22,17 @@ function GameLoadAudio(scope, AudioArray, callback) {
             if (audio.split("/")[0] === "MAIN") src = scope.constants.href + "resources/Audio/" + audio + ".mp3";
             const a = new Audio(src);
             a.onerror = function () {
-                LoadingScreenManager.addProgress(1);
                 console.warn(`${a.src} failed`);
+                LoadingScreenManager.addProgress(1);
+                c--;
             };
             a.addEventListener("canplaythrough", () => {
-                LoadingScreenManager.addProgress(1);
                 scope.cache.audio[audio] = a;
+                LoadingScreenManager.addProgress(1);
+                c--;
             }, false);
         }
     });
 
-    GameGlobalEvent.once("LoadingScreenFinishProgress", callback());
+    const r = setInterval(() => { if (c == 0) { callback(); clearInterval(r); } }, 100);
 }

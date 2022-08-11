@@ -13,24 +13,27 @@ function GameLoadImage(scope, imageArray, callback) {
     LoadingScreenManager.message = "Loading images";
     if (imageArray.length == 0) return callback();
     LoadingScreenManager.setMaxProgress(imageArray.length);
+    let c = imageArray.length;
 
     imageArray.forEach(image => {
         if (scope.cache.image[image]) console.log(`${image} is already loaded`);
         else {
             const i = new Image();
             i.onerror = function () {
-                LoadingScreenManager.addProgress(1);
                 console.warn(`${i.src} failed`);
+                LoadingScreenManager.addProgress(1);
+                c--;
             };
             i.onload = function () {
-                LoadingScreenManager.addProgress(1);
                 scope.cache.image[image] = GameLoadImage.structure(i, image);
+                LoadingScreenManager.addProgress(1);
+                c--;
             };
             i.src = scope.constants.href + "resources/Image/" + image + ".png";
         }
     });
 
-    GameGlobalEvent.once("LoadingScreenFinishProgress", callback());
+    const r = setInterval(() => { if (c == 0) { callback(); clearInterval(r); } }, 100);
 }
 
 /**
