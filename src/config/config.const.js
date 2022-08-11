@@ -13,7 +13,9 @@ const ConfigConst = {
         FIGHT: 6,
         PLAYERQUIPEMENT: 7,
         PAUSE: 8,
-        INTRODUCTION:998,
+        MAIN: 900,
+        INTRODUCTION: 950,
+        TRANSITION: 998,
         LOADING: 999,
         ERROR: 1000
     },
