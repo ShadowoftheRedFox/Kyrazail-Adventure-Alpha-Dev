@@ -1,4 +1,13 @@
 /// <reference path="../../ts/type.d.ts"/>
+/**
+ * Translate a code message and return the translated message.
+ * @param {string} messageCode The code message to translate.
+ * @param  {...any} [args] The arguments if needed.
+ * @returns {string} The translated message.
+ * @example GameTranslate("CheckPlayerNameCorrect", "Kyra")
+ * // if the game is in language "en":
+ * => "Your name is Kyra, is that correct?"
+ */
 function GameTranslate(messageCode, ...args) {
     if (!messageCode) throw new ReferenceError("messagecode is not defined.");
 
