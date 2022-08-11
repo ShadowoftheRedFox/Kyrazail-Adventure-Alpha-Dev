@@ -41,7 +41,7 @@ function DataLoaderManager() {
     throw new Error("This is a static class.");
 }
 
-DataLoaderManager._scripts = [];
+DataLoaderManager._datas = [];
 DataLoaderManager._errorUrls = [];
 DataLoaderManager._dataLoaded = {};
 
@@ -51,7 +51,7 @@ DataLoaderManager.setup = function (plugins, number, call) {
     if (typeof call !== "function") throw new TypeError(`Call is not a function, got ${typeof call}`);
     if (number >= plugins.length) return call();
     const plugin = plugins[number];
-    DataLoaderManager._scripts.push(plugin.name);
+    DataLoaderManager._datas.push(plugin.name);
     var url = plugin.path + plugin.name + ".json";
     let httpRequest = new XMLHttpRequest(); // asynchronous request
     httpRequest.open("GET", `${url}`);
