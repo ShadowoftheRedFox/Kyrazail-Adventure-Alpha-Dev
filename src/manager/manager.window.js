@@ -60,7 +60,7 @@ WindowManager.fatal = function (e) {
     console.error(e);
     try {
         //stop the game loops
-        window.cancelAnimationFrame(window.game.loop.stopLoop);
+        window.cancelAnimationFrame(window.game.GameLoop.stopLoop);
     } catch (err) {
         console.log(err);
     }
