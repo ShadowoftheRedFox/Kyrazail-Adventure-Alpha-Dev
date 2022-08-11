@@ -106,21 +106,28 @@ canvas {
 
 @font-face {
     font-family: "ComicSansMSBold";
-    src: url("../fonts/Comic Sans MS Bold.ttf") format("truetype");
+    src: url("../fonts/Comic Sans MS Bold.ttf") format("truetype"),
+        url("../fonts/Comic Sans MS.ttf") format("truetype");
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'Azure';
-    src: url('../fonts/PixelAzureBonds-327Z.ttf');
+    src: url('../fonts/PixelAzureBonds-327Z.ttf') format("TrueType"),
+        url("../fonts/Comic Sans MS.ttf") format("truetype");
+    font-display: block;
 }
 
 @font-face {
     font-family: 'Takhi';
-    src: url('../fonts/PixelTakhisis-ZajJ.ttf');
+    src: url('../fonts/PixelTakhisis-ZajJ.ttf') format("TrueType"),
+        url("../fonts/Comic Sans MS.ttf") format("truetype");
+    font-display: block;
 }
 
 @font-face {
     font-family: 'Unreadable';
-    src: url('../fonts/Unreadable.ttf');
+    src: url('../fonts/Unreadable.ttf') format("TrueType"),
+        url("../fonts/Comic Sans MS.ttf") format("truetype");
+    font-display: block;
 }
