@@ -95,12 +95,16 @@ class GameLoop {
                     resetState = (resetState === 'new' ? 'old' : 'new');
                 }
 
-                //check for errors
-                scope.GameCrashHandler();
-                // Update the game state
-                scope.state = scope.GameStateUpdate(now);
-                // Render the next frame
-                scope.GameRender();
+                try {
+                    //check for errors
+                    scope.GameCrashHandler();
+                    // Update the game state
+                    scope.state = scope.GameStateUpdate(now);
+                    // Render the next frame
+                    scope.GameRender();
+                } catch (e) { 
+                    WindowManager.fatal(e);
+                }
             }
         };
         return loop;
