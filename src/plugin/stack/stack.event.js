@@ -13,9 +13,4 @@ const StackLoadEvent = [{
     path: "./src/event/",
     status: true,
     description: "Manage and emit event when user interact with the game."
-},{
-    name: "event.window",
-    path: "./src/event/",
-    status: true,
-    description: "Check if window has changed."
-},];
+}];
