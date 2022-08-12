@@ -32,6 +32,9 @@ window.onload = ScriptLoaderManager.setup(StackLoadPlugin, 0, () => {
             try {
                 GameGlobalEvent = new EventEmitter();
                 LoadingScreenManager.init();
+                KeyboardTrackerManager.init();
+                MouseTrackerManager.init();
+                document.getElementById("title").innerText+=`: ${ConfigConst.TITLE.random()}`;
                 window.game = new Game();
             } catch (e) {
                 WindowManager.fatal(e);
