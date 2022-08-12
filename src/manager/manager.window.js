@@ -55,6 +55,10 @@ WindowManager.fatal = function (e) {
     //stop the loading screen if there is one
     LoadingScreenManager.end();
 
+    //clear all canvas
+    const ac = document.getElementsByTagName("canvas");
+    for (var c of ac) c.getContext('2d').clearRect(0, 0, c.width, c.height);
+
     const w = WindowManager.data.viewport.offsetWidth,
         h = WindowManager.data.viewport.offsetHeight;
     console.error(e);
