@@ -37,8 +37,8 @@ LoadingScreenManager.stripeSpeed = 0.6;
 LoadingScreenManager.stripeAlpha = 0.3;
 LoadingScreenManager.stripeColor = "#9c9c9c";
 
-LoadingScreenManager.animationW = 0;
-LoadingScreenManager.animationH = 2;
+LoadingScreenManager.animationW = (function (a) { return a[Math.floor(Math.random() * a.length)]; })([0, 3, 9]);
+LoadingScreenManager.animationH = (function (a) { return a[Math.floor(Math.random() * a.length)]; })([2, 6]);
 LoadingScreenManager.animationStep = 0;
 LoadingScreenManager.animationImage = null;
 LoadingScreenManager.animationMargin = 100;
@@ -258,6 +258,8 @@ LoadingScreenManager.title = function () {
     ctx.font = "32px Azure";
     ctx.textAlign = "center";
     ctx.fillText(`${LoadingScreenManager.message}${trailing}`, w / 2, h / 2);
+    ctx.font = "1px Unreadable";
+    ctx.fillText(".", 0, 0); // pre load unreadble font
 };
 
 LoadingScreenManager.addProgress = function (n) {
