@@ -33,6 +33,12 @@ const ConfigConst = {
         "You can try to escape any fight, but you better be lucky.",
         "You can find Dinarks everywhere. You can even make them if you know how!"
     ],
+    TITLE: [
+        "Maybe gold is useless...",
+        "Don't drink pure mana!",
+        "The forbidden name...",
+        "Violence is not a solution, it's THE solution."
+    ],
     CONTAINER: (function () { return document.getElementById("container"); })(),
     MAINCONTAINER: (function () { return document.getElementById("mainContainer"); })(),
     DEBUG: false
