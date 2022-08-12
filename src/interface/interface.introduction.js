@@ -1,6 +1,9 @@
 /// <reference path="../../ts/type.d.ts"/>
 
 class GameIntroductionInterface extends GameInterfaces {
+    /**
+     * @param {GameScope} scope 
+     */
     constructor(scope) {
         super({
             asOwnCanvas: true,
@@ -14,10 +17,16 @@ class GameIntroductionInterface extends GameInterfaces {
             transitionSpawnDuration: 1000,
             needsUpdate: true
         }, scope);
-        this.stepDelay = [1000, 5000, 1000, 1000, 6000, 1000];
+        this.stepDelay = [1000, 5000, 1000, 1000, 20000, 1000];
         this.started = 0;
         this.transitionNumber = 0;
         this.transitionStart = 0;
+        this.ctx = scope.cache.context[this.canvasGroup];
+
+        // save scroll up logs data
+        this.d = 0;
+        // current step up
+        this.logStep = 0;
     }
 
     /**
@@ -25,8 +34,8 @@ class GameIntroductionInterface extends GameInterfaces {
      */
     render(scope) {
         const p = scope.constants.package;
-        const ctx = scope.cache.context[this.canvasGroup];
-        var w = scope.w,
+        const ctx = this.ctx,
+            w = scope.w,
             h = scope.h;
 
         // start the transition
@@ -53,45 +62,48 @@ class GameIntroductionInterface extends GameInterfaces {
         }
 
         if (this.stepDelay[2] <= Date.now()) {
-            ctx.font = "1em Azure";
+            ctx.font = "16px Azure";
             // will scroll down text if needed
-            if (200 + 24 * p.changelog.length >= h && this.stepDelay[3] <= Date.now()) {
-                //scrolling down
-                p.changelog.forEach(log => {
-                    ctx.fillText(log, w / 2, 100 + p.changelog.indexOf(log) * 34 - Math.trunc(((this.stepDelay[4] - Date.now()) * p.changelog.length * 17) / 6000));
-                });
+            const c = p.changelog;
+            // check if last log is out of screen, add 10 for a little space between the screen bottom and last log
+            // also wait another 1.5s to have the time to read the first logs
+            if (110 + c.length * 24 > h && this.stepDelay[2] + 1500 <= Date.now()) {
+                // if out of screen, roll up the logs until last log is in screen
+                // calc the distance between end of screen and last log
+                if (this.d == 0) this.d = h - 110 + c.length * 24;
+                // add step until last log is 10px above screen bottom
+                if (110 + c.length * 24 - this.logStep > h) this.logStep +=
+                    // the amount of scroll up for the amount of time of the transition, minus 1s
+                    this.d / (((this.stepDelay[4] - this.started) - 1000) / (1000 / scope.constants.targetFps));
+                //draw each log with the step
+                c.forEach((log, idx) => { ctx.fillText(log, w / 2, (100 + idx * 24) - this.logStep, w); });
             } else {
-                // static
-                p.changelog.forEach(log => {
-                    ctx.fillText(log, w / 2, 100 + p.changelog.indexOf(log) * 34);
-                });
+                // last log is in screen, stay like that
+                c.forEach((log, idx) => { ctx.fillText(log, w / 2, 100 + idx * 24, w); });
             }
+
             //hide the bottom of the changelog text if changelogs slip under
             ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, w, 64);
+            ctx.fillRect(0, 0, w, 74);
             ctx.fillStyle = "#fff";
             ctx.font = "bold 32px Azure";
             ctx.fillText("Changelog", w / 2, 52);
         }
 
         if (this.stepDelay[5] < Date.now()) {
+            // stops introduction when all phase have been shown
             this.activated = false;
             scope.state.menu.main.activated = true;
-            return ctx.clearRect(0, 0, w, h);
+            ctx.clearRect(0, 0, w, h);
+            // remove this menu since he won't be used again
+            removeElement(this.interfaceCanvas.id);
+            delete scope.cache.context[this.canvasGroup];
+            delete scope.state.menu.intro;
+            return;
         }
 
         ctx.fillStyle = "#000";
         // make the transition effect
-        if (this.stepDelay[0] >= Date.now()) {
-            // transition fades away
-            if (this.transitionNumber != 1) {
-                this.transitionStart = Date.now();
-                this.transitionNumber = 1;
-            }
-            ctx.globalAlpha = 1 - ((Date.now() - this.transitionStart) / 1000);
-            ctx.fillRect(0, 0, w, h);
-            //! [1000, 5000, 1000, 1000, 6000, 1000];
-        }
         if (this.stepDelay[1] <= Date.now() && this.stepDelay[2] >= Date.now()) {
             // transition builds up
             if (this.transitionNumber != 2) {
@@ -110,14 +122,9 @@ class GameIntroductionInterface extends GameInterfaces {
             ctx.globalAlpha = 1 - ((Date.now() - this.transitionStart) / 1000);
             ctx.fillRect(0, 0, w, h);
         }
-        if (this.stepDelay[4] <= Date.now()) {
-            // transition builds up
-            if (this.transitionNumber != 4) {
-                this.transitionStart = Date.now();
-                this.transitionNumber = 4;
-            }
-            ctx.globalAlpha = ((Date.now() - this.transitionStart) / 1000);
-            ctx.fillRect(0, 0, w, h);
+        if (this.stepDelay[4] <= Date.now() && this.transitionNumber != 4) {
+            this.transitionNumber = 4;
+            TransitionEffectBuild(scope, this.transitionLeaveDuration);
         }
 
         //display version and release
@@ -127,10 +134,24 @@ class GameIntroductionInterface extends GameInterfaces {
         ctx.textAlign = "left";
         ctx.textBaseline = "bottom";
         ctx.fillText(`${p.releaseType} v${p.version} Last update: ${p.lastUpdate}`, 10, h - 10, w);
+        // console.log(this.interfaceCanvas.offsetWidth, this.interfaceCanvas.offsetWidth);
     }
 
     /**
      * @param {GameScope} scope 
      */
-    update(scope) { return scope.state; }
+    update(scope) {
+        if (KeyboardTrackerManager.map[" "] === true) {
+            // stops introduction when all phase have been shown
+            TransitionEffectCancel(scope);
+            this.activated = false;
+            scope.state.menu.main.activated = true;
+            this.ctx.clearRect(0, 0, scope.w, scope.h);
+            // remove this menu since he won't be used again
+            removeElement(this.interfaceCanvas.id);
+            delete scope.cache.context[this.canvasGroup];
+            delete scope.state.menu.intro;
+        }
+        return scope.state;
+    }
 }
