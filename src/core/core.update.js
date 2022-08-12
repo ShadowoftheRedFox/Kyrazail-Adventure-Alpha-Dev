@@ -69,7 +69,13 @@ const gameUpdate = function gameUpdate(scope) {
  */
 function GameStateUpdate(scope) {
     return function update(tFrame) {
-        scope.state.menu.intro.update(scope);
+        var menus = scope.state.menu;
+        //Loop through menu
+        for (var menu in menus) {
+            // Fire off each active menus `render` method
+            const m = menus[menu];
+            if (m.activated == true && m.needsUpdate === true) m.update(scope);
+        }
         return scope.state;
     };
 }
