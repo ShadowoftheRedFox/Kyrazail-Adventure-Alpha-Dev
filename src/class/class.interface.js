@@ -12,8 +12,12 @@ class GameInterfaces {
         this.requiredImage = options.requiredImage || [];
         this.requiredAudio = options.requiredAudio || [];
 
-        this.transitionSpawn = options.transitionSpawn || false; 
+        this.transitionSpawn = options.transitionSpawn || false;
+        this.transitionSpawnDuration = options.transitionSpawnDuration || 1000;
         this.transitionLeave = options.transitionLeave || false;
+        this.transitionLeaveDuration = options.transitionLeave || 1000;
+
+
         this.activated = options.activated || false;
         this.needsUpdate = options.needsUpdate || true;
         this.spawned = true;
@@ -30,9 +34,6 @@ class GameInterfaces {
         if (options.requiredAudio && options.requiredAudio.length > 0) GameAudiosToLoad = GameAudiosToLoad.concat(options.requiredAudio);
         if (options.requiredImage && options.requiredImage.length > 0) GameImagesToLoad = GameImagesToLoad.concat(options.requiredImage);
 
-        if (options.transitionLeave === true) this.transitionLeaveDuration = options.transitionLeaveDuration || 1000;
-        if (options.transitionSpawn === true) this.transitionSpawnDuration = options.transitionSpawnDuration || 1000;
-
         // create or get context depending of the parameters
         if (options.asOwnCanvas === true) {
             this.interfaceCanvas = generateCanvas(ConfigConst.MAINCONTAINER.offsetWidth, ConfigConst.MAINCONTAINER.offsetHeight, this.zindex);
@@ -41,6 +42,7 @@ class GameInterfaces {
             ConfigConst.CONTAINER.insertBefore(this.interfaceCanvas, ConfigConst.CONTAINER.firstChild);
         } else {
             if (!scope.cache.context[this.canvasGroup]) throw new ReferenceError(`${this.canvasGroup} has not yet been created.`);
+            this.interfaceCanvas = document.getElementById(this.canvasGroup);
         }
     }
 }
