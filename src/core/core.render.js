@@ -13,11 +13,12 @@ function GameRender(scope) {
             // Fire off each active menus `render` method
             const m = menus[menu];
             if (m.activated == true) {
-                if (m.needsUpdate === true) m.render(scope);
                 if (m.spawned === true) {
                     m.spawned = false;
-                    TransitionEffectBuild(scope, m.transitionSpawnDuration);
-                }
+                    TransitionEffectFade(scope, m.transitionSpawnDuration);
+                    scope.cache.context[m.canvasGroup].fillStyle = "black";
+                    scope.cache.context[m.canvasGroup].fillRect(0, 0, m.interfaceCanvas.width, m.interfaceCanvas.height);
+                } else if (m.needsUpdate === true) m.render(scope);
             }
         }
     };
