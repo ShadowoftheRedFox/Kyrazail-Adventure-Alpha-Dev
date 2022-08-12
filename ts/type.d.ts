@@ -22,6 +22,7 @@ declare global {
             ERROR: 1000
         }
         TIP: string[]
+        TITLE: string[]
         CONTAINER: HTMLElement | null
         MAINCONTAINER: HTMLElement | null
         DEBUG: boolean
@@ -283,8 +284,10 @@ declare global {
         language: GameLanguage
         /**Game session relativ constants.*/
         constants: {
-            /**If node js is present or not.*/
-            isNodejs: boolean
+            isNwjs: boolean
+            isAndroidChrome: boolean
+            isMobileSafari: boolean
+            isMobileDevice: boolean
             /**What platform the game is currently running on.*/
             platform: "Cloud" | string
             /**The url location of the game.*/
@@ -474,25 +477,6 @@ declare global {
         fatal(error: Error): void
     }
 
-    /**
-     * Return current date using the language format.
-     * @example "19/09/2009"
-     */
-    function getDate(): string
-
-    /**
-     * Return the exact date in dd/mm/yyyy hh:mm:ss format.
-     * @example '05/17/2012 10:52:21'
-     */
-    function getExactDate(): string
-
-    /**
-     * Remove any duplicate from the array, so it has every item once.
-     * @param a The array we want to remove duplicates.
-     * @since v1.0.2.5
-     */
-    function RemoveDuplicate(a: any[]): any[]
-
     type GameScriptPreLoad = {
         name: string
         path: string
@@ -564,6 +548,108 @@ declare global {
 
         validateOptions(options: GameInterfacesOptions, scope: GameScope): void
         render(scope: GameScope): void
-        render(scope: GameScope): object
+        update(scope: GameScope): object
+    }
+
+    const Utils: {
+        /**
+         * Return current date using the language format.
+         * 
+         * @method getDate
+         * @static
+         * @example "19/09/2009"
+         */
+        getDate(): string
+
+        /**
+         * Return the exact date in dd/mm/yyyy hh:mm:ss format.
+         * 
+         * @method getExactDate
+         * @static
+         * @example '05/17/2012 10:52:21'
+         */
+        getExactDate(): string
+
+        /**
+         * Remove any duplicate from the array, so it has every item once.
+         * 
+         * @method RemoveDuplicate
+         * @param a The array we want to remove duplicates.
+         * @since v1.0.2.5
+         */
+        RemoveDuplicate(a: any[]): any[]
+
+        /**
+         * Checks whether the browser is Android Chrome.
+         *
+         * @static
+         * @method isAndroidChrome
+         * @return {Boolean} True if the browser is Android Chrome
+         */
+        isAndroidChrome(): boolean
+
+        /**
+         * Checks whether the browser is Mobile Safari.
+         *
+         * @static
+         * @method isMobileSafari
+         * @return {Boolean} True if the browser is Mobile Safari
+         */
+        isMobileSafari(): boolean
+
+        /**
+         * Checks whether the platform is a mobile device.
+         *
+         * @static
+         * @method isMobileDevice
+         * @return {Boolean} True if the platform is a mobile device
+         */
+        isMobileDevice(): boolean
+
+        /**
+         * Checks whether the platform is NW.js.
+         *
+         * @static
+         * @method isNwjs
+         * @return {Boolean} True if the platform is NW.js
+         */
+        isNwjs(): boolean
+    }
+
+    const KeyboardTrackerManager: {
+        init(): void
+        array: string[]
+        map: { [name: string]: boolean }
+    }
+
+    const MouseTrackerManager: {
+        init(): void;
+        data: {
+            lastMove: {
+                x: number,
+                y: number
+            }
+            click: { x: number, y: number, date: number }[]
+        }
+        /**
+         * Check whether or not the mouse is over the given rectangle.
+         * @param x
+         * @param y
+         * @param w
+         * @param h
+         * @returns {boolean} If it's over ot not.
+         */
+        checkOver(x: number, y: number, w: number, h: number): boolean
+
+        /**
+         * Check whether or not there was a click in the given rectangle in the given past time.
+         * @param x
+         * @param y
+         * @param w
+         * @param h
+         * @param time How long should we look for a click, in ms. Default is 100ms.
+         * @returns {boolean} If there was a click or not.
+         */
+        checkClick(x: number, y: number, w: number, h: number, time?: number | 100): boolean
     }
 }
