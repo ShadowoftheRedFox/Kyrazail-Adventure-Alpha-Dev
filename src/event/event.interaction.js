@@ -1,6 +1,6 @@
 /// <reference path="../../ts/type.d.ts"/>
 function MouseTrackerManager() {
-    throw new StaticClassError("MouseTrackerManager is a static class.");
+    throw new StaticClassError("This is a static class.");
 }
 
 MouseTrackerManager.data = {
@@ -14,27 +14,31 @@ MouseTrackerManager.data = {
     click: []
 };
 
-MouseTrackerManager.init = function() {
-    document.onmousedown = function(ev) { MouseTrackerManager.OnMouseClick(ev); };
-    document.onmousemove = function(ev) { MouseTrackerManager.OnMouseMove(ev); };
+MouseTrackerManager.init = function () {
+    document.onmousedown = function (ev) { MouseTrackerManager.OnMouseClick(ev); };
+    document.onmousemove = function (ev) { MouseTrackerManager.OnMouseMove(ev); };
 };
 
 /**
  * @param {MouseEvent} event 
  */
-MouseTrackerManager.OnMouseMove = function(event) {
+MouseTrackerManager.OnMouseMove = function (event) {
     MouseTrackerManager.data.lastMove = { x: event.clientX, y: event.clientY };
 };
 
 /**
  * @param {MouseEvent} event 
  */
-MouseTrackerManager.OnMouseClick = function(event) {
+MouseTrackerManager.OnMouseClick = function (event) {
     MouseTrackerManager.data.click.push({
         x: event.clientX,
         y: event.clientY,
         date: Date.now()
     });
+    // remove too old click
+    if (MouseTrackerManager.data.click.length>20) {
+        MouseTrackerManager.data.click.shift();
+    }
 };
 
 /**
@@ -44,7 +48,7 @@ MouseTrackerManager.OnMouseClick = function(event) {
  * @param {number} h
  * @returns {boolean}
  */
-MouseTrackerManager.checkOver = function(x, y, w, h) {
+MouseTrackerManager.checkOver = function (x, y, w, h) {
     const o = MouseTrackerManager.data.lastMove;
     if (o.x >= x && o.x <= x + w && o.y >= y && o.y <= y + h) return true;
     else return false;
@@ -58,7 +62,7 @@ MouseTrackerManager.checkOver = function(x, y, w, h) {
  * @param {number|100} time
  * @returns {boolean}
  */
-MouseTrackerManager.checkClick = function(x, y, w, h, time) {
+MouseTrackerManager.checkClick = function (x, y, w, h, time) {
     if (MouseTrackerManager.data.click.length === 0) return false;
     let c = MouseTrackerManager.data.click[MouseTrackerManager.data.click.length - 1];
 
@@ -70,5 +74,58 @@ MouseTrackerManager.checkClick = function(x, y, w, h, time) {
         } else {
             return false;
         }
+    }
+};
+
+
+function KeyboardTrackerManager() {
+    throw new Error("This is a static class.");
+}
+
+/**
+ * Hold which keys are pressed and which are not.
+ * @example
+ * KeyboardTrackerManager.map => {
+ *  "a":true,
+ *  "b":false,
+ *  " ":false
+ * }
+ */
+KeyboardTrackerManager.map = {};
+/**
+ * Hold which keys are currently being pressed.
+ * @example
+ * KeyboardTrackerManager.array => ["a", " ", "m"]
+ */
+KeyboardTrackerManager.array = [];
+
+KeyboardTrackerManager.init = function () {
+    document.onkeydown = function (ev) { KeyboardTrackerManager.onkeydown(ev); };
+    document.onkeyup = function (ev) { KeyboardTrackerManager.onkeyup(ev); };
+};
+
+/**
+ * @param {KeyboardEvent} ev 
+ */
+KeyboardTrackerManager.onkeydown = function (ev) {
+    // remember this in map
+    ev = ev || event; // to deal with IE
+    KeyboardTrackerManager.map[ev.key] = true;
+
+    // remember this in array
+    if (KeyboardTrackerManager.array.indexOf(ev.key) == -1) KeyboardTrackerManager.array.push(ev.key);
+};
+
+/**
+ * @param {KeyboardEvent} ev 
+ */
+KeyboardTrackerManager.onkeyup = function (ev) {
+    // remember this in map
+    ev = ev || event; // to deal with IE
+    KeyboardTrackerManager.map[ev.key] = false;
+
+    // remember this in array
+    if (KeyboardTrackerManager.array.indexOf(ev.key) > -1) {
+        KeyboardTrackerManager.array.splice(KeyboardTrackerManager.array.indexOf(ev.key), 1);
     }
 };
