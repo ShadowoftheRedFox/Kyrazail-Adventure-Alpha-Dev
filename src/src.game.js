@@ -19,7 +19,14 @@ class Game {
 
         // declare session relativ constants
         this.constants = {
-            isNodejs: typeof require === "function" && typeof process === 'object',
+            /**Checks whether the platform is Nw.js. */
+            isNwjs: Utils.isNwjs(),
+            /**Checks whether the platform is Android Chrome. */
+            isAndroidChrome: Utils.isAndroidChrome(),
+            /**Checks whether the platform is Mobile Safari. */
+            isMobileSafari: Utils.isMobileSafari(),
+            /**Checks whether the platform is a mobile device. */
+            isMobileDevice: Utils.isMobileDevice(),
             platform: "Cloud",
             href: window.location.href,
             targetFps: GameConfig.targetFps,
@@ -67,27 +74,19 @@ class Game {
 
         try {
 
-            // instantiate the transition canvas
-            const transition = generateCanvas(this.w, this.h, ConfigConst.ZINDEX.TRANSITION);
-            transition.id = "TransitionViewport";
-            this.cache.transition = transition.getContext("2d");
-            transition.w = this.w;
-            transition.h = this.h;
-
-            $c.insertBefore(transition, $c.firstChild);
-
-            //TODO add a share method so that every rendering object in their creating function share the same canavs
+            // TODO add a share method so that every rendering object in their creating function share the same canavs
             //add every rendering object to their current object
             this.state.entities = this.state.entities || {};
             this.state.entities.player = new GameEntityPlayer(0, 0, "east", "Characters/Spiritual", 0, 2, "Faces/Spiritual", 0, 2);
             // add a mob/NPC manager so it can be added anytime
 
             this.state.menu = this.state.menu || {};
+            this.state.menu.transition = new GameTransitionInterface(this);
             this.state.menu.intro = new GameIntroductionInterface(this);
             this.state.menu.main = new GameMainInterface(this);
             // this.state.menu.pause = new Pause(this);
             // this.state.menu.gameOver = new GameOver(this);
-            //todo will be added later, because use a lot of data trafic and must manage the github API
+            // TODO will be added later, because use a lot of data trafic and must manage the github API
             // this.state.menu.checkUpdate = new updateMenu(this);
 
             // Instantiate core modules with the current scope
@@ -97,9 +96,13 @@ class Game {
             this.GameLoop = new GameLoop(this);
 
             var that = this;
+            
+            GameImagesToLoad = Utils.RemoveDuplicate(GameImagesToLoad);
+            GameAudiosToLoad = Utils.RemoveDuplicate(GameAudiosToLoad);
+
             GameLoadImage(this, GameImagesToLoad, () => {
                 GameLoadAudio(this, GameAudiosToLoad, () => {
-                    //todo launch an audio on the main menu
+                    // TODO launch an audio on the main menu
 
                     // Start off main loop
                     that.GameLoop.main();
