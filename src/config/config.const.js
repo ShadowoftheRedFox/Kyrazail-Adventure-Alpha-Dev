@@ -37,7 +37,9 @@ const ConfigConst = {
         "Maybe gold is useless...",
         "Don't drink pure mana!",
         "The forbidden name...",
-        "Violence is not a solution, it's THE solution."
+        "Violence is not a solution, it's THE solution.",
+        "e^(iπ)+1=0",
+        "erutnevdA liazaryK"
     ],
     CONTAINER: (function () { return document.getElementById("container"); })(),
     MAINCONTAINER: (function () { return document.getElementById("mainContainer"); })(),
