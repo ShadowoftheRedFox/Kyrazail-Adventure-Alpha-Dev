@@ -84,6 +84,8 @@ class Game {
             this.state.menu.transition = new GameTransitionInterface(this);
             this.state.menu.intro = new GameIntroductionInterface(this);
             this.state.menu.main = new GameMainInterface(this);
+            this.state.menu.settings = new GameSettingsInterface(this);
+            this.state.menu.load = new GameLoadInterface(this);
             // this.state.menu.pause = new Pause(this);
             // this.state.menu.gameOver = new GameOver(this);
             // TODO will be added later, because use a lot of data trafic and must manage the github API
