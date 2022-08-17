@@ -8,7 +8,7 @@ const GameMainInterfaceTopBackground = [
     ["Battlebacks1/Snow", "Battlebacks2/Snowfield", "black"],
     ["Battlebacks1/Dirt1", "Battlebacks2/Cliff", "black"],
     ["Battlebacks1/Dirt2", "Battlebacks2/Port", "black"],
-    ["Battlebacks1/Grassland", "Battlebacks2/Forest1", "white"],
+    ["Battlebacks1/Grassland", "Battlebacks2/Forest1", "black"],
     ["Battlebacks1/GrassMaze", "Battlebacks2/Forest2", "white"],
     ["Battlebacks1/Cobblestones4", "Battlebacks2/Bridge", "black"]
 ];
@@ -72,6 +72,8 @@ class GameMainInterface extends GameInterfaces {
         //TODO save the game in an auto save if a game is currently being played
 
         //TODO launch a new game
+
+        //TODO also create on start 2 auto save files
     }
     /**
      * @param {GameScope} scope 
@@ -139,12 +141,25 @@ class GameMainInterface extends GameInterfaces {
         this.menuButton.forEach((button, index) => {
             ctx.fillText(button.name, w / 2, h / 1.8 + 52 * index, w);
             button.x = w / 2 - 200;
-            button.y = h / 1.8 + 52 * this.focused - 16;
+            button.y = h / 1.8 + 52 * index - 16;
             button.w = 400;
             button.h = 40;
         });
 
-        this.needsUpdate = false;
+        if (scope.constants.debug) {
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.arc(MouseTrackerManager.data.lastMove.x, MouseTrackerManager.data.lastMove.y, 10, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(MouseTrackerManager.data.click[MouseTrackerManager.data.click.length - 1].x, MouseTrackerManager.data.click[MouseTrackerManager.data.click.length - 1].y, 10, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // this.needsUpdate = false;
     }
 
     /**
@@ -166,6 +181,18 @@ class GameMainInterface extends GameInterfaces {
                 that.menuButton[that.focused].f(scope);
             }
         };
+
+        this.menuButton.forEach((b, idx) => {
+            if (MouseTrackerManager.checkOver(b.x, b.y, b.w, b.h)) {
+                this.focused = idx;
+                this.f();
+            }
+            if (MouseTrackerManager.checkClick(b.x, b.y, b.w, b.h)) {
+                b.f(scope);
+                this.f();
+            }
+        });
+
         return scope.state;
     }
 
