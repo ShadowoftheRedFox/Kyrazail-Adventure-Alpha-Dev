@@ -24,6 +24,7 @@ MouseTrackerManager.init = function () {
  */
 MouseTrackerManager.OnMouseMove = function (event) {
     MouseTrackerManager.data.lastMove = { x: event.clientX, y: event.clientY };
+    MouseTrackerManager.update();
 };
 
 /**
@@ -36,9 +37,10 @@ MouseTrackerManager.OnMouseClick = function (event) {
         date: Date.now()
     });
     // remove too old click
-    if (MouseTrackerManager.data.click.length>20) {
+    if (MouseTrackerManager.data.click.length > 20) {
         MouseTrackerManager.data.click.shift();
     }
+    MouseTrackerManager.update();
 };
 
 /**
@@ -59,7 +61,7 @@ MouseTrackerManager.checkOver = function (x, y, w, h) {
  * @param {number} y
  * @param {number} w
  * @param {number} h
- * @param {number|100} time
+ * @param {number | 100} time
  * @returns {boolean}
  */
 MouseTrackerManager.checkClick = function (x, y, w, h, time) {
@@ -77,6 +79,15 @@ MouseTrackerManager.checkClick = function (x, y, w, h, time) {
     }
 };
 
+MouseTrackerManager.updated = false;
+MouseTrackerManager.waitTimeUpdate = 100;
+
+MouseTrackerManager.update = function () {
+    MouseTrackerManager.updated = true;
+    setTimeout(() => {
+        MouseTrackerManager.updated = false;
+    }, MouseTrackerManager.waitTimeUpdate);
+};
 
 function KeyboardTrackerManager() {
     throw new Error("This is a static class.");
