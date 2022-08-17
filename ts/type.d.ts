@@ -16,6 +16,7 @@ declare global {
             PLAYERQUIPEMENT: 7
             PAUSE: 8
             MAIN: 900
+            MAINSUBMENU: 901
             INTRODUCTION: 950
             TRANSITION: 998
             LOADING: 999
