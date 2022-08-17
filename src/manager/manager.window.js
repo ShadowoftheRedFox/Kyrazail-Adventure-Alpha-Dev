@@ -33,13 +33,10 @@ WindowManager.beforeUnloadSetup = function () {
 };
 
 WindowManager.closeGame = function () {
-    window.cancelAnimationFrame(window.game.GameLoop.stopLoop);
-    window.game = {};
-    const ac = document.getElementsByTagName("canvas");
-    for (var c of ac) {
-        c.remove();
+    if (confirm("Are you sure?")) {
+        close();
     }
-    return true;
+    return false;
 };
 
 WindowManager.reloadGame = function () {
