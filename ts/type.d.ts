@@ -623,7 +623,7 @@ declare global {
     }
 
     const MouseTrackerManager: {
-        init(): void;
+        init(): void
         data: {
             lastMove: {
                 x: number,
@@ -652,4 +652,90 @@ declare global {
          */
         checkClick(x: number, y: number, w: number, h: number, time?: number | 100): boolean
     }
+
+    type GameMenuBuilderOptions = {
+        x: number
+        y: number
+        w: number
+        h: number
+        positionX: "center" | "left" | "right"
+        positionY: "center" | "top" | "bottom"
+        menu: GameMenuBuilderOptionsMenu[]
+        menuFocused: number
+        name: string
+        align: "horizontal" | "vertical"
+    }
+
+    type GameMenuBuilderOptionsMenu = {
+        name: string,
+        focused: boolean,
+        value: "function" | "menu"
+        function?: Function
+        menu?: GameMenuBuilderOptionsMenu[]
+        menuFocused?: number
+        align: "horizontal" | "vertical"
+    }
+
+    /**
+     * All rectangle are created centered by the given x y coordinates.
+     */
+    const RectangleCreator: {
+        /**
+         * Draws a rounded rectangle using the current state of the canvas.
+         * If you omit the last three params, it will draw a rectangle
+         * outline with a 5 pixel border radius
+         * @param {CanvasRenderingContext2D} ctx
+         * @param {Number} x The top left x coordinate
+         * @param {Number} y The top left y coordinate
+         * @param {Number} width The width of the rectangle
+         * @param {Number} height The height of the rectangle
+         * @param {Number} [radius = 5] The corner radius. It can also be an object to specify different radius for corners
+         * @param {Number} [radius.tl = 0] Top left
+         * @param {Number} [radius.tr = 0] Top right
+         * @param {Number} [radius.br = 0] Bottom right
+         * @param {Number} [radius.bl = 0] Bottom left
+         * @param {Boolean} [fill = false] Whether to fill the rectangle.
+         * @param {Boolean} [stroke = true] Whether to stroke the rectangle.
+         */
+        roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius?: number, fill?: boolean, stroke?: boolean): void
+        /**
+         * Create a frame with the given parameters. Draw it like a stroke rectangle with shady background.
+         * @param scope Scope.
+         * @param x Upper left corner x coordinate.
+         * @param y Upper left corner x coordinate.
+         * @param w Width of the rectangle.
+         * @param h Heigth of the rectangle.
+         */
+        frameRectangleTrans(scope: any, x: number, y: number, w: number, h: number): void
+        /**
+         * Create a frame with the given parameters. Draw it like a stroke rectangle.
+         * @param scope Scope.
+         * @param x Upper left corner x coordinate.
+         * @param y Upper left corner x coordinate.
+         * @param w Width of the rectangle.
+         * @param h Heigth of the rectangle.
+         * @param imageToDraw The image you want to draw inside the frame. Optionnal.
+         * @param ix Upper left corner x coordinate of the image. If imageToDraw is specified, must be defined.
+         * @param iy Upper left corner x coordinate of the image. If imageToDraw is specified, must be defined.
+         * @param iw Width of the rectangle of the image. If imageToDraw is specified, must be defined.
+         * @param ih Heigth of the rectangle of the image. If imageToDraw is specified, must be defined.
+         */
+        frameRectangle(scope: any, x: number, y: number, w: number, h: number, imageToDraw?: HTMLImageElement, ix?: number, iy?: number, iw?: number, ih?: number): void
+    }
+
+    function TransitionEffectBuild(scope: GameScope, duration: number): void
+    function TransitionEffectFade(scope: GameScope, duration: number): void
+    function TransitionEffectCancel(scope: GameScope): void
+
+    /**
+     * Draw an underline under a given text and position.
+     * @param context The context to draw onto.
+     * @param text The text that will be underlined.
+     * @param x The text x position.
+     * @param y The text y position.
+     * @param color The underline line color.
+     * @param textSize The size of the text.
+     * @param align The alignment of the text.
+     */
+    function underline(context: CanvasRenderingContext2D, text: string, x: number, y: number, color: string | CanvasGradient | CanvasPattern, textSize: string, align: CanvasTextAlign): void
 }
