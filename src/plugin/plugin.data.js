@@ -20,7 +20,7 @@ const StackLoadData = [{
     description: "Update information on last update check.",
     objPath: ""
 }, {
-    name: "test",
+    name: "MapTest",
     path: "./resources/data/map/",
     status: true,
     parameters: {},
