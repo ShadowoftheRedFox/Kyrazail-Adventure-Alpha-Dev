@@ -15,7 +15,7 @@ class GameMenuBuilder {
         this.positionX = options.positionX || "center";
 
         this.name = (options.name ? options.name.toString().trim() : (function () { throw new ReferenceError(`You must pass a name for the menu.`); })());
-        this.fields = (skipValidation == true ? options.fields : this.validateFields(options.fields));
+        this.menu = (skipValidation == true ? options.menu : this.validateMenus(options.menu));
 
         this.menuFocused = options.menuFocused || 0;
 
@@ -23,21 +23,25 @@ class GameMenuBuilder {
         this.y = options.y || 0;
         this.w = options.w || ConfigConst.MAINCONTAINER.offsetWidth;
         this.h = options.h || ConfigConst.MAINCONTAINER.offsetHeight;
+
+        this.align = options.align || "vertical";
     }
 
     /**
-     * @param {GameMenuBuilderOptionsField[]} fields 
+     * @param {GameMenuBuilderOptionsMenu[]} menus 
      */
-    validateFields(fields) {
-        fields.forEach((field, idx) => {
-            if (!field.name) throw new ReferenceError(`The field ${idx} must have a name.`);
-            field.name = field.name.toString().trim();
-            if (!field.focused || typeof field.focused != "boolean") field.focused = false;
-            if (!["function" | "menu"].includes(field.value)) throw new TypeError(`The field ${idk} must have a valid value.`);
-            if (field.value == "function" && (!field.function || typeof field.function != "function")) throw new TypeError(`The field ${idk} must have a valid function.`);
-            if (field.value == "menu" && (!field.menu || Array.isArray(field.menu))) throw new TypeError(`The field ${idk} must have a valid menu.`);
-            if (field.value == "menu") field.menu = this.validateFields(field.menu);
+    validateMenus(menus) {
+        menus.forEach((menu, idx) => {
+            if (!menu.name) throw new ReferenceError(`The menu ${idx} must have a name.`);
+            menu.name = menu.name.toString().trim();
+            if (!menu.focused || typeof menu.focused != "boolean") menu.focused = false;
+            if (!["function", "menu"].includes(menu.value)) throw new TypeError(`The menu ${idx} (${menu.name}) must have a valid value.`);
+            if (menu.value == "function" && (!menu.function || typeof menu.function != "function")) throw new TypeError(`The menu ${idx} (${menu.name}) must have a valid function.`);
+            if (menu.value == "menu" && (!menu.menu || !menu.menu.length)) throw new TypeError(`The menu ${idx} (${menu.name}) must have a valid menu.`);
+            if (menu.value == "menu") menu.menu = this.validateMenus(menu.menu);
+            if (!menu.align) menu.align = "vertical";
+            if (!["horizontal", "vertical"].includes(menu.align)) throw new TypeError(`The menu ${idx} (${menu.name}) must have a valid align.`);
         });
-        return fields;
+        return menus;
     }
 }
