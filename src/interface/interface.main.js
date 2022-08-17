@@ -146,7 +146,7 @@ class GameMainInterface extends GameInterfaces {
             button.h = 40;
         });
 
-        if (scope.constants.debug) {
+        if (ConfigConst.DEBUG) {
             ctx.fillStyle = "red";
             ctx.beginPath();
             ctx.arc(MouseTrackerManager.data.lastMove.x, MouseTrackerManager.data.lastMove.y, 10, 0, 2 * Math.PI, false);
