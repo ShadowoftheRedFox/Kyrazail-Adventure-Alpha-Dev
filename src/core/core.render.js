@@ -13,7 +13,7 @@ function GameRender(scope) {
             // Fire off each active menus `render` method
             const m = menus[menu];
             if (m.activated == true) {
-                if (m.spawned === true) {
+                if (m.spawned === true && m.transitionSpawn) {
                     m.spawned = false;
                     TransitionEffectFade(scope, m.transitionSpawnDuration);
                     scope.cache.context[m.canvasGroup].fillStyle = "black";
