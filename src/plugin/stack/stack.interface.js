@@ -33,4 +33,14 @@ const StackLoadInterface = [{
     path: "./src/interface/",
     status: true,
     description: "The pause menu."
+}, {
+    name: "interface.settings",
+    path: "./src/interface/",
+    status: true,
+    description: "The settings menu."
+}, {
+    name: "interface.load",
+    path: "./src/interface/",
+    status: true,
+    description: "The load menu."
 }];
