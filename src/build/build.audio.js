@@ -21,7 +21,7 @@ function GameLoadAudio(scope, AudioArray, callback) {
             let src = scope.constants.href + "resources/Audio/" + audio + ".ogg";
             if (audio.split("/")[0] === "MAIN") src = scope.constants.href + "resources/Audio/" + audio + ".mp3";
             const a = new Audio(src);
-            a.onerror = function () {
+            a.onabort = a.onerror = function () {
                 console.warn(`${a.src} failed`);
                 LoadingScreenManager.addProgress(1);
                 c--;
@@ -34,5 +34,5 @@ function GameLoadAudio(scope, AudioArray, callback) {
         }
     });
 
-    const r = setInterval(() => { if (c == 0) { callback(); clearInterval(r); } }, 100);
+    const r = setInterval(() => { if (c == 0) { console.log("done"); callback(); clearInterval(r); } }, 100);
 }
