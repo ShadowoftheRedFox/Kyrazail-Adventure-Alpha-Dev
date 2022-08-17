@@ -13,4 +13,9 @@ const StackLoadClass = [{
     path: "./src/class/",
     status: true,
     description: "Interface schema class."
+}, {
+    name: "class.menu",
+    path: "./src/class/",
+    status: true,
+    description: "Menu schema class."
 }];
