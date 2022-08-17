@@ -98,7 +98,7 @@ class Game {
             this.GameLoop = new GameLoop(this);
 
             var that = this;
-            
+
             GameImagesToLoad = Utils.RemoveDuplicate(GameImagesToLoad);
             GameAudiosToLoad = Utils.RemoveDuplicate(GameAudiosToLoad);
 
