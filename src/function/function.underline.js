@@ -14,6 +14,7 @@ function underline(context, text, x, y, color, textSize, align) {
     var textWidth = context.measureText(text).width;
     var startX = 0;
     var startY = y + (parseInt(textSize) / 15);
+    if (context.textBaseline == "middle") startY = y + parseInt(textSize) + 1 - 7 * (parseInt(textSize) / 15);
     var endX = 0;
     var endY = startY;
     var underlineHeight = parseInt(textSize) / 15;
@@ -22,7 +23,6 @@ function underline(context, text, x, y, color, textSize, align) {
         underlineHeight = 1;
     }
 
-    context.beginPath();
     if (align == "center") {
         startX = x - (textWidth / 2);
         endX = x + (textWidth / 2);
@@ -34,10 +34,11 @@ function underline(context, text, x, y, color, textSize, align) {
         endX = x + textWidth;
     }
 
-    //save paramters to set like before underline
+    //save parameters to set like before underline
     const preColor = context.strokeStyle,
         preLineWidth = context.lineWidth;
 
+    context.beginPath();
     context.strokeStyle = color;
     context.lineWidth = underlineHeight;
     context.moveTo(startX, startY);
