@@ -107,6 +107,7 @@ class Game {
                     // Start off main loop
                     that.GameLoop.main();
                     LoadingScreenManager.end();
+                    console.timeEnd("Started game in");
                 });
             });
         } catch (e) {
