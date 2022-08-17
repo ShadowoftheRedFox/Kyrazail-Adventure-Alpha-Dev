@@ -21,6 +21,12 @@ function RectangleCreator() {
  * @param {Boolean} [stroke = true] Whether to stroke the rectangle.
  */
 RectangleCreator.roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
+    if (!ctx) throw new ReferenceError(`Context is not defined.`);
+    if (isNaN(x) === true) throw new TypeError(`x is not a number.`);
+    if (isNaN(y) === true) throw new TypeError(`y is not a number.`);
+    if (isNaN(width) === true) throw new TypeError(`w is not a number.`);
+    if (isNaN(height) === true) throw new TypeError(`h is not a number.`);
+
     if (typeof stroke === 'undefined') {
         stroke = true;
     }
@@ -62,21 +68,21 @@ RectangleCreator.roundRect = function (ctx, x, y, width, height, radius, fill, s
 
 /**
  * Create a frame with the given parameters. Draw it like a stroke rectangle with shady background.
- * @param {scope} scope Scope.
+ * @param {GameScope} scope Scope.
  * @param {number} x Upper left corner x coordinate.
  * @param {number} y Upper left corner x coordinate.
  * @param {number} w Width of the rectangle.
  * @param {number} h Heigth of the rectangle.
  */
 RectangleCreator.frameRectangleTrans = function (scope, x, y, w, h) {
-    if (!scope) throw new Error(`Scope is not defined.`);
-    if (!scope.context) throw new Error(`Context is not defined.`);
-    if (!scope.cache) throw new Error(`Cache is not defined.`);
+    if (!scope) throw new ReferenceError(`Scope is not defined.`);
+    if (!scope.context) throw new ReferenceError(`Context is not defined.`);
+    if (!scope.cache) throw new ReferenceError(`Cache is not defined.`);
     if (isNaN(x) === true) throw new TypeError(`x is not a number.`);
     if (isNaN(y) === true) throw new TypeError(`y is not a number.`);
     if (isNaN(w) === true) throw new TypeError(`w is not a number.`);
     if (isNaN(h) === true) throw new TypeError(`h is not a number.`);
-    const i = scope.cache.image.system.Window.image,
+    const i = scope.cache.image["System/Window"].image,
         ctx = scope.context;
 
     //? since we can only scretch inside rectangle, we'll need to draw border one by one
@@ -107,7 +113,7 @@ RectangleCreator.frameRectangleTrans = function (scope, x, y, w, h) {
 
 /**
  * Create a frame with the given parameters. Draw it like a stroke rectangle.
- * @param {scope} scope Scope.
+ * @param {GameScope} scope Scope.
  * @param {number} x Upper left corner x coordinate.
  * @param {number} y Upper left corner x coordinate.
  * @param {number} w Width of the rectangle.
@@ -119,10 +125,10 @@ RectangleCreator.frameRectangleTrans = function (scope, x, y, w, h) {
  * @param {number} [ih] Heigth of the rectangle of the image. If imageToDraw is specified, must be defined.
  */
 RectangleCreator.frameRectangle = function (scope, x, y, w, h, imageToDraw, ix, iy, iw, ih) {
-    if (!scope) throw new Error(`Scope is not defined.`);
-    if (!scope.context) throw new Error(`Context is not defined.`);
-    if (!scope.cache) throw new Error(`Cache is not defined.`);
-    if (!imageToDraw) throw new Error(`imageToDraw is not defined.`);
+    if (!scope) throw new ReferenceError(`Scope is not defined.`);
+    if (!scope.context) throw new ReferenceError(`Context is not defined.`);
+    if (!scope.cache) throw new ReferenceError(`Cache is not defined.`);
+    if (!imageToDraw) throw new ReferenceError(`imageToDraw is not defined.`);
     if (isNaN(x) === true) throw new TypeError(`x is not a number.`);
     if (isNaN(y) === true) throw new TypeError(`y is not a number.`);
     if (isNaN(w) === true) throw new TypeError(`w is not a number.`);
@@ -131,7 +137,7 @@ RectangleCreator.frameRectangle = function (scope, x, y, w, h, imageToDraw, ix, 
     if (isNaN(iy) === true) throw new TypeError(`iy is not a number.`);
     if (isNaN(iw) === true) throw new TypeError(`iw is not a number.`);
     if (isNaN(ih) === true) throw new TypeError(`ih is not a number.`);
-    const i = scope.cache.image.system.Window.image,
+    const i = scope.cache.image["System/Window"].image,
         ctx = scope.context;
 
     //? we'll need to draw border one by one
