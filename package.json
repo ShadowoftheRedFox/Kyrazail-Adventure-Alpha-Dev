@@ -1,6 +1,6 @@
 {
     "name": "kyrazail-adventure",
-    "version": "1.0.2.7",
+    "version": "1.0.2.8",
     "description": "Kyrazail adventure game.",
     "main": "./index.html",
     "keywords": [
@@ -19,20 +19,22 @@
         "min-width": 400,
         "min-height": 800
     },
-    "lastUpdate": "15/08/2022",
+    "lastUpdate": "17/08/2022",
     "releaseType": "Dev/Alpha",
     "changelog": [
         "Map is now rendered!",
         "Added a crashHandler more efficient.",
         "Changed the font text style.",
         "Available on windows, linux and os!",
-        "Better loading and loading screen!"
+        "Better loading and loading screen!",
+        "Main menu theme and window title messages!"
     ],
     "chromium-args": "--enable-node-worker --allow-file-access-from-files",
     "scripts": {
         "debug": "nw src/www/ --remote-debugging-port=9222 --allow-file-access-from-files",
         "dev": "nw",
-        "prod": "nwbuild --zip false --buildDir dist/ ./"
+        "prod": "nwbuild --zip false --buildDir dist/ ./",
+        "test": "node ./test/script.test.js"
     },
     "repository": {
         "type": "git",
