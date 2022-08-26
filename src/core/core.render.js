@@ -6,6 +6,16 @@
  */
 function GameRender(scope) {
     return function render() {
+        if (ConfigConst.DEBUG && WindowManager.data.ctx) {
+            const ctx = WindowManager.data.ctx,
+                m = ctx.measureText(`${scope.GameLoop.fps} fps`);
+            ctx.clearRect(0, 0, scope.w, scope.h);
+            ctx.fillStyle = "yellow";
+            ctx.font = "100% Azure";
+            ctx.textAlign = "end";
+            ctx.textBaseline = "hanging";
+            ctx.fillText(`${scope.GameLoop.fps} fps`, scope.w - 10, 10);
+        }
 
         var menus = scope.state.menu;
         //Loop through menu
