@@ -652,6 +652,9 @@ declare global {
          * @returns {boolean} If there was a click or not.
          */
         checkClick(x: number, y: number, w: number, h: number, time?: number | 100): boolean
+
+        updated: boolean
+        waitTimeUpdate: number
     }
 
     type GameMenuBuilderOptions = {
