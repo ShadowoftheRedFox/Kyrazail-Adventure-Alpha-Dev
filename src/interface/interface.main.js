@@ -288,6 +288,16 @@ class GameMainInterface extends GameInterfaces {
         });
     }
 
+    drawTitle(ctx, title, that, w, h) {
+        ctx.fillStyle = that.choosen[2];
+        ctx.font = '200% Azure';
+        ctx.imageSmoothingQuality = "high";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(title, w / 2, h / 6);
+        ctx.font = '150% Azure';
+    }
+
     /**
      * @param {GameScope} scope
      * @param {this} that 
@@ -297,24 +307,17 @@ class GameMainInterface extends GameInterfaces {
             w = scope.w,
             h = scope.h,
             currentMenu = that.menu[that.focusedMenu];
-        ctx.fillStyle = that.choosen[2];
-        ctx.font = '200% Azure';
-        ctx.imageSmoothingQuality = "high";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(currentMenu.name, w / 2, h / 6);
-        ctx.font = '150% Azure';
+        that.drawTitle(ctx, currentMenu.name, that, scope.w, scope.h);
 
         var gradient = ctx.createLinearGradient(w / 2 - 200, h / 1.8, w / 2 + 200, h / 1.8);
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        ctx.fillStyle = gradient;
-        // ctx.fillStyle = "red";
-        ctx.fillRect(w / 2 - 200, h / 1.8 + 52 * that.focused - 16, 400, 40);
-
-        ctx.fillStyle = that.choosen[2];
+        
         currentMenu.button.forEach((button, index) => {
+            ctx.fillStyle = gradient;
+            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
             if (index == 0) {
                 ctx.textAlign = "left";
@@ -347,24 +350,17 @@ class GameMainInterface extends GameInterfaces {
             w = scope.w,
             h = scope.h,
             currentMenu = that.menu[that.focusedMenu];
-        ctx.fillStyle = that.choosen[2];
-        ctx.font = '200% Azure';
-        ctx.imageSmoothingQuality = "high";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(currentMenu.name, w / 2, h / 6);
-        ctx.font = '150% Azure';
+        that.drawTitle(ctx, currentMenu.name, that, scope.w, scope.h);
 
         var gradient = ctx.createLinearGradient(w / 2 - 200, h / 1.8, w / 2 + 200, h / 1.8);
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        ctx.fillStyle = gradient;
-        // ctx.fillStyle = "red";
-        ctx.fillRect(w / 2 - 200, h / 1.8 + 52 * that.focused - 16, 400, 40);
-
-        ctx.fillStyle = that.choosen[2];
+        
         currentMenu.button.forEach((button, index) => {
+            ctx.fillStyle = gradient;
+            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
             if (index == 0) {
                 ctx.textAlign = "left";
@@ -397,24 +393,17 @@ class GameMainInterface extends GameInterfaces {
             w = scope.w,
             h = scope.h,
             currentMenu = that.menu[that.focusedMenu];
-        ctx.fillStyle = that.choosen[2];
-        ctx.font = '200% Azure';
-        ctx.imageSmoothingQuality = "high";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(currentMenu.name, w / 2, h / 6);
-        ctx.font = '150% Azure';
+        that.drawTitle(ctx, currentMenu.name, that, scope.w, scope.h);
 
         var gradient = ctx.createLinearGradient(w / 2 - 200, h / 1.8, w / 2 + 200, h / 1.8);
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        ctx.fillStyle = gradient;
-        // ctx.fillStyle = "red";
-        ctx.fillRect(w / 2 - 200, h / 1.8 + 52 * that.focused - 16, 400, 40);
-
-        ctx.fillStyle = that.choosen[2];
+        
         currentMenu.button.forEach((button, index) => {
+            ctx.fillStyle = gradient;
+            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
             if (index == 0) {
                 ctx.textAlign = "left";
@@ -448,24 +437,17 @@ class GameMainInterface extends GameInterfaces {
             w = scope.w,
             h = scope.h,
             currentMenu = that.menu[that.focusedMenu];
-        ctx.fillStyle = that.choosen[2];
-        ctx.font = '200% Azure';
-        ctx.imageSmoothingQuality = "high";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(currentMenu.name, w / 2, h / 6);
-        ctx.font = '150% Azure';
+        that.drawTitle(ctx, currentMenu.name, that, scope.w, scope.h);
 
         var gradient = ctx.createLinearGradient(w / 2 - 200, h / 1.8, w / 2 + 200, h / 1.8);
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        ctx.fillStyle = gradient;
-        // ctx.fillStyle = "red";
-        ctx.fillRect(w / 2 - 200, h / 1.8 + 52 * that.focused - 16, 400, 40);
-
-        ctx.fillStyle = that.choosen[2];
+        
         currentMenu.button.forEach((button, index) => {
+            ctx.fillStyle = gradient;
+            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
             if (index == 0) {
                 ctx.textAlign = "left";
@@ -499,13 +481,7 @@ class GameMainInterface extends GameInterfaces {
             w = scope.w,
             h = scope.h,
             currentMenu = that.menu[that.focusedMenu];
-        ctx.fillStyle = that.choosen[2];
-        ctx.font = '200% Azure';
-        ctx.imageSmoothingQuality = "high";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("Load game", w / 2, h / 6);
-        ctx.font = '150% Azure';
+        that.drawTitle(ctx, "Load Game", that, scope.w, scope.h);
 
         //if in app
         if (scope.constants.isNwjs) {
@@ -532,12 +508,11 @@ class GameMainInterface extends GameInterfaces {
             gradient.addColorStop(0, "#F3C12600");
             gradient.addColorStop(0.5, "#6FE0E1");
             gradient.addColorStop(1, "#3C1EEE00");
-            ctx.fillStyle = gradient;
-            // ctx.fillStyle = "red";
-            ctx.fillRect(w / 2 - 200, h / 1.8 + 52 * that.focused - 16, 400, 40);
-
-            ctx.fillStyle = that.choosen[2];
+            
             currentMenu.button.forEach((button, index) => {
+                ctx.fillStyle = gradient;
+                if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+                ctx.fillStyle = that.choosen[2];
                 //? back button will always be the first one in the array
                 if (index == 0) {
                     ctx.textAlign = "left";
