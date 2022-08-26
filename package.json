@@ -1,7 +1,9 @@
 {
     "name": "kyrazail-adventure",
-    "version": "1.0.2.8",
-    "description": "Kyrazail adventure game.",
+    "version": "1.0.2.9",
+    "lastUpdate": "17/08/2022",
+    "releaseType": "Dev/Alpha",
+    "description": "Kyrazail adventure game. Maybe a real description soon, who knows?",
     "main": "./index.html",
     "keywords": [
         "game",
@@ -16,11 +18,9 @@
         "toolbar": false,
         "width": 800,
         "height": 400,
-        "min-width": 400,
-        "min-height": 800
+        "min-width": 800,
+        "min-height": 400
     },
-    "lastUpdate": "17/08/2022",
-    "releaseType": "Dev/Alpha",
     "changelog": [
         "Map is now rendered!",
         "Added a crashHandler more efficient.",
