@@ -5,13 +5,14 @@ function MouseTrackerManager() {
 
 MouseTrackerManager.data = {
     lastMove: {
-        x: null,
-        y: null
+        // init false coordinate to prevent bug
+        x: -100,
+        y: -100
     },
     /**
      * @type {{x: number, y: number, date: number}[]}
      */
-    click: []
+    click: [{ x: -100, y: -100, date: 0 }]
 };
 
 MouseTrackerManager.init = function () {
