@@ -281,6 +281,19 @@ declare global {
                 main: GameInterfaces
             }
         }
+        /** Handle errors and corrupted data. */
+        GameCrashHandler(): void;
+        /** Update the state of the game. */
+        GameStateUpdate(state: object): object;
+        /** Render the game. */
+        GameRender(): void;
+        /** Make the game loop. */
+        GameLoop: {
+            /** The current fps of the game. */
+            fps: number
+            /** Function that loop through the requestAnimationFrame. */
+            main(targetFps: number): void
+        }
         /**The language wanted.*/
         language: GameLanguage
         /**Game session relativ constants.*/
