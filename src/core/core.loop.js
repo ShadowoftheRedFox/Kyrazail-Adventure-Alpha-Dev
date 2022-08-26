@@ -18,7 +18,8 @@ class GameLoop {
     constructor(scope) {
         var loop = this;
         // Initialize timer variables so we can calculate FPS
-        var fps = scope.constants.targetFps,
+        // minus one because better for the screen and the game
+        var fps = scope.constants.targetFps - 1,
             fpsInterval = 1000 / fps,
             before = window.performance.now(),
             // Set up an object to contain our alternating FPS calculations
@@ -38,7 +39,7 @@ class GameLoop {
             resetInterval = 5,
             resetState = 'new';
 
-        loop.fps = 0;
+        loop.fps = fps;
 
         //prevent crash before the start of crashHandler 
         if (isNaN(fps) === true || fps < 0) {
@@ -102,7 +103,7 @@ class GameLoop {
                     scope.state = scope.GameStateUpdate(now);
                     // Render the next frame
                     scope.GameRender();
-                } catch (e) { 
+                } catch (e) {
                     WindowManager.fatal(e);
                 }
             }
