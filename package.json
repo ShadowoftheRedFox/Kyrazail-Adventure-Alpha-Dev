@@ -1,7 +1,7 @@
 {
     "name": "kyrazail-adventure",
     "version": "1.0.2.9",
-    "lastUpdate": "17/08/2022",
+    "lastUpdate": "26/08/2022",
     "releaseType": "Dev/Alpha",
     "description": "Kyrazail adventure game. Maybe a real description soon, who knows?",
     "main": "./index.html",
