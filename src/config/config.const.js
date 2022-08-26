@@ -43,6 +43,6 @@ const ConfigConst = {
         "erutnevdA liazaryK"
     ],
     CONTAINER: (function () { return document.getElementById("container"); })(),
-    MAINCONTAINER: (function () { return document.getElementById("mainContainer"); })(),
+    MAINCONTAINER: (function () { return document.body; })(),
     DEBUG: false
 };
