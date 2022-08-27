@@ -306,8 +306,6 @@ declare global {
             platform: "Cloud" | string
             /**The url location of the game.*/
             href: string
-            /**The wanted fps of the game.*/
-            targetFps: number
             /**Package.json*/
             package: {
                 name: "kyrazail-adventure"
@@ -327,11 +325,8 @@ declare global {
             }
         }
         soundsSettings: {
-            volumeBGM: number
-            volumeBGS: number
-            volumeMAIN: number
-            volumeME: number
-            volumeSE: number
+            volumeBG: number
+            volumeEFX: number
             playingBGM: HTMLAudioElement | null
             playingBGS: HTMLAudioElement | null
             playingMAIN: HTMLAudioElement | null
@@ -755,4 +750,6 @@ declare global {
      * @param align The alignment of the text.
      */
     function underline(context: CanvasRenderingContext2D, text: string, x: number, y: number, color: string | CanvasGradient | CanvasPattern, textSize: string, align: CanvasTextAlign): void
+
+    interface Window { game: GameScope }
 }
