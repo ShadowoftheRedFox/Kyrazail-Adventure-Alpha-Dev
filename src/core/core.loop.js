@@ -19,7 +19,7 @@ class GameLoop {
         var loop = this;
         // Initialize timer variables so we can calculate FPS
         // minus one because better for the screen and the game
-        var fps = scope.constants.targetFps - 1,
+        var fps = GameConfig.targetFps - 1,
             fpsInterval = 1000 / fps,
             before = window.performance.now(),
             // Set up an object to contain our alternating FPS calculations
@@ -42,7 +42,7 @@ class GameLoop {
         loop.fps = fps;
 
         //prevent crash before the start of crashHandler 
-        if (isNaN(fps) === true || fps < 0) {
+        if (isNaN(fps) === true || fps < 30) {
             console.warn("targetFps in the config file is not valid, setting to default 60.");
             fps = 60;
         }
@@ -52,6 +52,11 @@ class GameLoop {
          * @param {number} tframe 
          */
         loop.main = function mainLoop(tframe) {
+            if (fps != GameConfig.targetFps - 1) {
+                fps = GameConfig.targetFps - 1;
+                fpsInterval = 1000 / fps;
+                loop.fps = fps;
+            }
             // Request a new Animation Frame
             // setting to `stopLoop` so animation can be stopped via
             // `window.cancelAnimationFrame( loop.stopLoop )`
