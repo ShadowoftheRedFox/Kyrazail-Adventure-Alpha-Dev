@@ -70,20 +70,20 @@ class GameMainInterface extends GameInterfaces {
                 f: this.loadMenuFct,
                 button: [
                     {
-                        name: "Back",
-                        x: 0,
-                        y: 0,
-                        w: 0,
-                        h: 0,
-                        f: this.toMain
-                    },
-                    {
                         name: "Retry",
                         x: 0,
                         y: 0,
                         w: 0,
                         h: 0,
                         f: this.loadSaveFileRetry
+                    },
+                    {
+                        name: "Back",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        f: this.toMain
                     }
                 ],
                 focusedButton: 0
@@ -93,13 +93,6 @@ class GameMainInterface extends GameInterfaces {
                 f: this.settingsMenuFct,
                 button: [
                     {
-                        name: "Back",
-                        x: 0,
-                        y: 0,
-                        w: 0,
-                        h: 0,
-                        f: this.toMain
-                    }, {
                         name: "General",
                         x: 0,
                         y: 0,
@@ -120,6 +113,14 @@ class GameMainInterface extends GameInterfaces {
                         w: 0,
                         h: 0,
                         f: this.toKeyBind
+                    },
+                    {
+                        name: "Back",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        f: this.toMain
                     }
                 ],
                 focusedButton: 0
@@ -128,6 +129,38 @@ class GameMainInterface extends GameInterfaces {
                 name: "Settings: General",
                 f: this.settingsGeneralMenuFct,
                 button: [
+                    {
+                        name: "Always run:",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        f: () => { GameConfig.alwaysRun = (GameConfig.alwaysRun ? false : true); }
+                    },
+                    {
+                        name: "   Game fps:",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        special: true,
+                        f: (dir) => {
+                            if (dir == 1 && GameConfig.targetFps + 10 <= 140) { GameConfig.targetFps += 10; }
+                            else if (dir == 0 && GameConfig.targetFps - 10 >= 30) { GameConfig.targetFps -= 10; }
+                        }
+                    },
+                    {
+                        name: "Debug mode:",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        f: () => {
+                            ConfigConst.DEBUG = (ConfigConst.DEBUG ? false : true);
+                            // clear fps if debug has been disabled
+                            if (!ConfigConst.DEBUG) WindowManager.data.ctx.clearRect(0, 0, scope.w, scope.h);
+                        }
+                    },
                     {
                         name: "Back",
                         x: 0,
@@ -143,6 +176,32 @@ class GameMainInterface extends GameInterfaces {
                 name: "Settings: Audio",
                 f: this.settingsAudioMenuFct,
                 button: [
+                    {
+                        name: "Musics volume:",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        special: true,
+                        f: (dir) => {
+                            var s = scope.soundsSettings.volumeBG;
+                            if (dir == 1 && s + 5 <= 1) { s = s * 100; s += 5; s = s / 100; }
+                            else if (dir == 0 && s - 5 >= 0) { s = s * 100; s -= 5; s = s / 100; }
+                        }
+                    },
+                    {
+                        name: "Sounds volume:",
+                        x: 0,
+                        y: 0,
+                        w: 0,
+                        h: 0,
+                        special: true,
+                        f: (dir) => {
+                            var s = scope.soundsSettings.volumeEFX;
+                            if (dir == 1 && s + 5 <= 1) { s = s * 100; s += 5; s = s / 100; }
+                            else if (dir == 0 && s - 5 >= 0) { s = s * 100; s -= 5; s = s / 100; }
+                        }
+                    },
                     {
                         name: "Back",
                         x: 0,
@@ -313,34 +372,80 @@ class GameMainInterface extends GameInterfaces {
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        
+
         currentMenu.button.forEach((button, index) => {
-            ctx.fillStyle = gradient;
-            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            if (index == currentMenu.focusedButton) {
+                ctx.fillStyle = gradient;
+                if (index == currentMenu.button.length - 1) that.createGradient(ctx, button);
+                ctx.fillRect(button.x, button.y, button.w, button.h);
+            }
             ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
-            if (index == 0) {
-                ctx.textAlign = "left";
-                ctx.textBaseline = "bottom";
-                const metrics = ctx.measureText(button.name);
-                const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-                ctx.fillText(button.name, 20, h - 20, w);
-                // bigger hitbox, that's why it's different than the text coos
-                button.x = 0;
-                button.y = h - actualHeight - 40;
-                button.w = metrics.width + 40;
-                button.h = h - button.y;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
+            if (index == currentMenu.button.length - 1) {
+                that.createBackButton(ctx, button, w, h);
             } else {
-                ctx.fillText(button.name, w / 2, h / 1.8 + 52 * index, w);
-                button.x = w / 2 - 200;
-                button.y = h / 1.8 + 52 * index - 16;
-                button.w = 400;
-                button.h = 40;
+                //correct the position
+                index--;
+                // special button menu
+                switch (index) {
+                    case 0:
+                        ctx.textAlign = "left";
+                        ctx.fillText(button.name, w / 10, h / 1.8 + 52 * index, w);
+                        button.x = 0;
+                        button.y = h / 1.8 + 52 * index - 16;
+                        button.w = w;
+                        button.h = 40;
+                        ctx.textAlign = "center";
+                        ctx.fillText(GameConfig.alwaysRun ? "Enabled" : "Disabled", w / 2, h / 1.8 + 52 * index);
+                        break;
+                    case 1:
+                        ctx.textAlign = "left";
+                        ctx.fillText(button.name, w / 10, h / 1.8 + 52 * index, w);
+                        button.x = w / 2 - w / 4;
+                        button.y = h / 1.8 + 52 * index - 16;
+                        button.w = w / 2;
+                        button.h = 40;
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${GameConfig.targetFps > 30 ? "-" : " "}    ${GameConfig.targetFps}    ${GameConfig.targetFps < 140 ? "+" : " "}`, w / 2, h / 1.8 + 52 * index);
+                        break;
+                    case 2:
+                        ctx.textAlign = "left";
+                        ctx.fillText(button.name, w / 10, h / 1.8 + 52 * index, w);
+                        button.x = 0;
+                        button.y = h / 1.8 + 52 * index - 16;
+                        button.w = w;
+                        button.h = 40;
+                        ctx.textAlign = "center";
+                        ctx.fillText(ConfigConst.DEBUG ? "Enabled" : "Disabled", w / 2, h / 1.8 + 52 * index);
+                        break;
+                }
             }
         });
     }
+
+    createGradient(ctx, button) {
+        var gradient = ctx.createLinearGradient(button.x, button.y, button.x + button.w, button.y);
+        gradient.addColorStop(0, "#F3C126");
+        gradient.addColorStop(0.5, "#6FE0E181");
+        gradient.addColorStop(1, "#3C1EEE00");
+        ctx.fillStyle = gradient;
+    }
+
+    createBackButton(ctx, button, w, h) {
+        ctx.textAlign = "left";
+        ctx.textBaseline = "bottom";
+        const metrics = ctx.measureText(button.name);
+        const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+        ctx.fillText(button.name, 20, h - 20, w);
+        // bigger hitbox, that's why it's different than the text coos
+        button.x = 0;
+        button.y = h - actualHeight - 40;
+        button.w = metrics.width + 40;
+        button.h = h - button.y;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+    }
+
     /**
     * @param {GameScope} scope
     * @param {this} that 
@@ -356,31 +461,43 @@ class GameMainInterface extends GameInterfaces {
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        
+
         currentMenu.button.forEach((button, index) => {
-            ctx.fillStyle = gradient;
-            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            if (index == currentMenu.focusedButton) {
+                ctx.fillStyle = gradient;
+                if (index == currentMenu.button.length - 1) that.createGradient(ctx, button);
+                ctx.fillRect(button.x, button.y, button.w, button.h);
+            }
             ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
-            if (index == 0) {
-                ctx.textAlign = "left";
-                ctx.textBaseline = "bottom";
-                const metrics = ctx.measureText(button.name);
-                const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-                ctx.fillText(button.name, 20, h - 20, w);
-                // bigger hitbox, that's why it's different than the text coos
-                button.x = 0;
-                button.y = h - actualHeight - 40;
-                button.w = metrics.width + 40;
-                button.h = h - button.y;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
+            if (index == currentMenu.button.length - 1) {
+                that.createBackButton(ctx, button, w, h);
             } else {
-                ctx.fillText(button.name, w / 2, h / 1.8 + 52 * index, w);
-                button.x = w / 2 - 200;
-                button.y = h / 1.8 + 52 * index - 16;
-                button.w = 400;
-                button.h = 40;
+                //correct the position
+                index--;
+                // special button menu
+                switch (index) {
+                    case 0:
+                        ctx.textAlign = "left";
+                        ctx.fillText(button.name, w / 10, h / 1.8 + 52 * index, w);
+                        button.x = w / 2 - w / 4;
+                        button.y = h / 1.8 + 52 * index - 16;
+                        button.w = w / 2;
+                        button.h = 40;
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${scope.soundsSettings.volumeBG > 0 ? "-" : " "}    ${scope.soundsSettings.volumeBG * 100}%    ${scope.soundsSettings.volumeBG < 1 ? "+" : " "}`, w / 2, h / 1.8 + 52 * index);
+                        break;
+                    case 1:
+                        ctx.textAlign = "left";
+                        ctx.fillText(button.name, w / 10, h / 1.8 + 52 * index, w);
+                        button.x = w / 2 - w / 4;
+                        button.y = h / 1.8 + 52 * index - 16;
+                        button.w = w / 2;
+                        button.h = 40;
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${scope.soundsSettings.volumeEFX > 0 ? "-" : " "}    ${scope.soundsSettings.volumeEFX * 100}%    ${scope.soundsSettings.volumeEFX < 1 ? "+" : " "}`, w / 2, h / 1.8 + 52 * index);
+                        break;
+                }
             }
         });
     }
@@ -399,26 +516,19 @@ class GameMainInterface extends GameInterfaces {
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        
+
         currentMenu.button.forEach((button, index) => {
-            ctx.fillStyle = gradient;
-            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            if (index == currentMenu.focusedButton) {
+                ctx.fillStyle = gradient;
+                if (index == currentMenu.button.length - 1) that.createGradient(ctx, button);
+                ctx.fillRect(button.x, button.y, button.w, button.h);
+            }
             ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
-            if (index == 0) {
-                ctx.textAlign = "left";
-                ctx.textBaseline = "bottom";
-                const metrics = ctx.measureText(button.name);
-                const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-                ctx.fillText(button.name, 20, h - 20, w);
-                // bigger hitbox, that's why it's different than the text coos
-                button.x = 0;
-                button.y = h - actualHeight - 40;
-                button.w = metrics.width + 40;
-                button.h = h - button.y;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
+            if (index == currentMenu.button.length - 1) {
+                that.createBackButton(ctx, button, w, h);
             } else {
+                index--;
                 ctx.fillText(button.name, w / 2, h / 1.8 + 52 * index, w);
                 button.x = w / 2 - 200;
                 button.y = h / 1.8 + 52 * index - 16;
@@ -443,26 +553,19 @@ class GameMainInterface extends GameInterfaces {
         gradient.addColorStop(0, "#F3C12600");
         gradient.addColorStop(0.5, "#6FE0E1");
         gradient.addColorStop(1, "#3C1EEE00");
-        
+
         currentMenu.button.forEach((button, index) => {
-            ctx.fillStyle = gradient;
-            if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+            if (index == currentMenu.focusedButton) {
+                ctx.fillStyle = gradient;
+                if (index == currentMenu.button.length - 1) that.createGradient(ctx, button);
+                ctx.fillRect(button.x, button.y, button.w, button.h);
+            }
             ctx.fillStyle = that.choosen[2];
             //? back button will always be the first one in the array
-            if (index == 0) {
-                ctx.textAlign = "left";
-                ctx.textBaseline = "bottom";
-                const metrics = ctx.measureText(button.name);
-                const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-                ctx.fillText(button.name, 20, h - 20, w);
-                // bigger hitbox, that's why it's different than the text coos
-                button.x = 0;
-                button.y = h - actualHeight - 40;
-                button.w = metrics.width + 40;
-                button.h = h - button.y;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
+            if (index == currentMenu.button.length - 1) {
+                that.createBackButton(ctx, button, w, h);
             } else {
+                index--;
                 ctx.fillText(button.name, w / 2, h / 1.8 + 52 * index, w);
                 button.x = w / 2 - 200;
                 button.y = h / 1.8 + 52 * index - 16;
@@ -488,14 +591,15 @@ class GameMainInterface extends GameInterfaces {
             const fs = require("fs"),
                 path = require("path");
             that.savePath = path.resolve(path.resolve(), "save");
+            that.files = [];
 
-            if (!this.checkSaveFile) {
-                fs.readdir(this.savePath, (err, f) => {
+            if (!that.checkSaveFile) {
+                fs.readdir(that.savePath, (err, f) => {
                     //handling error
                     if (err) {
-                        that.files = err;
+                        that.files = [err];
                     }
-                    that.files = f.toString();
+                    that.files = f;
                 });
                 that.checkSaveFile = true;
             }
@@ -508,10 +612,18 @@ class GameMainInterface extends GameInterfaces {
             gradient.addColorStop(0, "#F3C12600");
             gradient.addColorStop(0.5, "#6FE0E1");
             gradient.addColorStop(1, "#3C1EEE00");
-            
+
             currentMenu.button.forEach((button, index) => {
-                ctx.fillStyle = gradient;
-                if (index == currentMenu.focusedButton) ctx.fillRect(button.x, button.y, button.w, button.h);
+                if (index == currentMenu.focusedButton) {
+                    if (index == 0) {
+                        gradient = ctx.createLinearGradient(button.x, button.y, button.x + button.w, button.y);
+                        gradient.addColorStop(0, "#F3C126");
+                        gradient.addColorStop(0.5, "#6FE0E181");
+                        gradient.addColorStop(1, "#3C1EEE00");
+                    }
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(button.x, button.y, button.w, button.h);
+                }
                 ctx.fillStyle = that.choosen[2];
                 //? back button will always be the first one in the array
                 if (index == 0) {
@@ -638,7 +750,13 @@ class GameMainInterface extends GameInterfaces {
 
             this.menu[this.focusedMenu].button.forEach((b, idx) => {
                 ctx.fillStyle = "red";
-                ctx.fillRect(b.x, b.y, b.w, b.h);
+                if (!b.special) ctx.fillRect(b.x, b.y, b.w, b.h);
+                else {
+                    ctx.fillStyle = "yellow";
+                    ctx.fillRect(b.x, b.y, b.w / 2, b.h);
+                    ctx.fillStyle = "green";
+                    ctx.fillRect(b.x + b.w / 2, b.y, b.w / 2, b.h);
+                }
                 if (MouseTrackerManager.checkClick(b.x, b.y, b.w, b.h)) {
                     ctx.fillStyle = "blue";
                     ctx.fillRect(b.x, b.y, b.w, b.h);
@@ -673,19 +791,35 @@ class GameMainInterface extends GameInterfaces {
                 currentMenu.focusedButton--;
                 that.u();
             }
-            if (k.confirm.includes(ev.key)) {
+            if (k.confirm.includes(ev.key) && !currentMenu.button[currentMenu.focusedButton].special) {
                 currentMenu.button[currentMenu.focusedButton].f(scope, that);
+            }
+            if (currentMenu.button[currentMenu.focusedButton].special) {
+                if (k.right.includes(ev.key)) { currentMenu.button[currentMenu.focusedButton].f(1); that.u(); }
+                if (k.left.includes(ev.key)) { currentMenu.button[currentMenu.focusedButton].f(0); that.u(); }
             }
         };
 
         currentMenu.button.forEach((b, idx) => {
+            // time between two frame
+            const time = 1000 / GameConfig.targetFps;
             if (MouseTrackerManager.checkOver(b.x, b.y, b.w, b.h)) {
                 currentMenu.focusedButton = idx;
                 that.u();
             }
-            if (MouseTrackerManager.checkClick(b.x, b.y, b.w, b.h, 1)) {
+            if (MouseTrackerManager.checkClick(b.x, b.y, b.w, b.h, time) && !b.special) {
                 that.u();
                 b.f(scope, that);
+            }
+            if (b.special) {
+                if (MouseTrackerManager.checkClick(b.x, b.y, b.w / 2, b.h, time)) {
+                    that.u();
+                    b.f(0);
+                }
+                if (MouseTrackerManager.checkClick(b.x + b.w / 2, b.y, b.w / 2, b.h, time)) {
+                    that.u();
+                    b.f(1);
+                }
             }
         });
 
