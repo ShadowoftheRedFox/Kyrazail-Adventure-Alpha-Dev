@@ -25,7 +25,21 @@ MouseTrackerManager.init = function () {
  */
 MouseTrackerManager.OnMouseMove = function (event) {
     MouseTrackerManager.data.lastMove = { x: event.clientX, y: event.clientY };
+    MouseTrackerManager.moving = true;
     MouseTrackerManager.update();
+    MouseTrackerManager.stopedMoved({ x: event.clientX, y: event.clientY });
+};
+
+MouseTrackerManager.moving = false;
+MouseTrackerManager.stopedMoved = function (old) {
+    // to "vanish" the cursor if it stopped moving at the next frame
+    // so that you can freely use the keyboard even if the cursor is hover a button
+    if (MouseTrackerManager.moving) {
+        setTimeout(() => {
+            if (MouseTrackerManager.data.lastMove.x == old.x && MouseTrackerManager.data.lastMove.y == old.y) MouseTrackerManager.data.lastMove = { x: -10, y: -10 };
+        }, 1000 / GameConfig.targetFps);
+        MouseTrackerManager.moving = false;
+    }
 };
 
 /**
