@@ -29,7 +29,6 @@ class Game {
             isMobileDevice: Utils.isMobileDevice(),
             platform: "Cloud",
             href: window.location.href,
-            targetFps: GameConfig.targetFps,
             // for introduction information 
             package: DataLoaderManager._dataLoaded.package
         };
@@ -49,11 +48,8 @@ class Game {
 
         // add an property for all sounds
         this.soundsSettings = {
-            volumeBGM: 0.5,
-            volumeBGS: 0.5,
-            volumeMAIN: 0.5,
-            volumeME: 0.5,
-            volumeSE: 0.5,
+            volumeBG: 0.5,
+            volumeEFX: 0.5,
             playingBGM: null,
             playingBGS: null,
             playingMAIN: null,
